@@ -1,10 +1,10 @@
 # Noted
 
 ## Introduction
-    Let's face it. As a student one of the hardest challenges we face is finding quality notes for our classes. If we miss a class if we have our friends send us notes, or if we are lucky they are posted online. 
+Let's face it. As a student one of the hardest challenges we face is finding quality notes for our classes. If we miss a class if we have our friends send us notes, or if we are lucky they are posted online. 
 
 ## The App
-    Noted is a platform where students can both share and read notes posted by other students. You can sign up and have access to other students notes from classes as well as any study materials. When you post notes, you are rewarded with tokens which you can use to purchase the right to view other peoples notes. The tokens you earn can be used to view notes from any of your classes, meaning that if you post notes for a math class, the tokens you earn can be used to view any other class you wish. 
+Noted is a platform where students can both share and read notes posted by other students. You can sign up and have access to other students notes from classes as well as any study materials. When you post notes, you are rewarded with tokens which you can use to purchase the right to view other peoples notes. The tokens you earn can be used to view notes from any of your classes, meaning that if you post notes for a math class, the tokens you earn can be used to view any other class you wish. 
 
 ### Core Features
 - Ability upload and view files.
