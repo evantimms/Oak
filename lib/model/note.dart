@@ -9,4 +9,9 @@ class Note {
   
   int upVotes;
   int downVotes;
+
+  double getRating() {
+    // TODO: create algorithm for calculating rating
+    return upVotes / downVotes;
+  }
 }
