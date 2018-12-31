@@ -18,7 +18,7 @@ class _MainScreenState extends State<MainScreen>  with TickerProviderStateMixin 
     SearchScreen()
   ];
 
-  int _currentIndex = 0;
+  int _currentIndex = 1;
   
   void _onTabTapped(int newIndex){
     setState(() {
