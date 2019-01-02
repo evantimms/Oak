@@ -1,8 +1,10 @@
+//TODO: Figure out how to simply these imports
 import 'package:flutter/material.dart';
 import '../screens/NotesScreen.dart';
 import '../screens/UploadScreen.dart';
 import '../screens/SearchScreen.dart';
 import '../screens/SettingsScreen.dart';
+import '../screens/TransactionScreen.dart';
 
 class MainScreen extends StatefulWidget{
 
@@ -20,6 +22,7 @@ class _MainScreenState extends State<MainScreen>  with TickerProviderStateMixin 
 
   int _currentIndex = 1;
   
+  // Changes current page 
   void _onTabTapped(int newIndex){
     setState(() {
           _currentIndex = newIndex;
@@ -41,6 +44,15 @@ class _MainScreenState extends State<MainScreen>  with TickerProviderStateMixin 
               );
             },
           ),
+          IconButton(
+            icon: Icon(Icons.monetization_on),
+            onPressed: (){
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => TransactionScreen()),
+              );
+            },
+          )
         ],
       ),
       body: _children[_currentIndex],

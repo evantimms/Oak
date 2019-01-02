@@ -7,6 +7,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  //TODO: Add logo widget above emailInput
 
   @override
   Widget build(BuildContext context){

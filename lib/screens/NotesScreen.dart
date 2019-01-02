@@ -33,6 +33,7 @@ class _NotesScreenState extends State<NotesScreen> with TickerProviderStateMixin
               child: TabBarView(
                 children: <Widget>[
                   ListView(
+                    //TODO: Implement Card View
                     children: <Widget>[
                       Row(
                         children: <Widget>[
