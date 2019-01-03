@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import '../widgets/NoteList.dart';
 class NotesScreen extends StatefulWidget {
 
   @override
@@ -28,27 +28,12 @@ class _NotesScreenState extends State<NotesScreen> with TickerProviderStateMixin
                 )
               ],
             ),
-            SizedBox(
-              height: 300.0,
+            Expanded(
+              // height: 300.0,
               child: TabBarView(
                 children: <Widget>[
-                  ListView(
-                    //TODO: Implement Card View
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Card(
-                          ),
-                          Card(),
-                        ],
-                      )
-                    ]
-                  ),
-                  Center(
-                    child: Text(
-                      "Featured Notes"
-                    ),
-                  )
+                  NoteList(),
+                  NoteList()
                 ],
               ),
             )
