@@ -56,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     final forgotLabel = FlatButton(
       child: Text('Forgot Password', style: TextStyle(color: Colors.black54),), 
+      onPressed: (){},
     );
 
     return Scaffold(
