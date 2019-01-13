@@ -1,6 +1,18 @@
 import 'package:flutter/material.dart';
+import '../auth/authentication.dart';
+class SettingsScreen extends StatefulWidget {
+  final auth;
 
-class SettingsScreen extends StatelessWidget {
+  SettingsScreen({this.auth});
+
+  _SettingScreenState createState() => new _SettingScreenState();
+
+ 
+}
+
+class _SettingScreenState extends State<SettingsScreen>{
+  bool _requestingLogOut = false;
+
 
   @override
   Widget build(BuildContext context){
@@ -29,9 +41,33 @@ class SettingsScreen extends StatelessWidget {
               leading: Icon(Icons.power_settings_new),
               title: Text('Log Out'),
               trailing: Icon(Icons.arrow_forward),
-            )
+              onTap: (){ 
+                setState((){_requestingLogOut = true;});
+              }
+            ),
+            (_requestingLogOut == true) ?
+            AlertDialog(
+              title: Text('Are you sure you want to logout?'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Yes'),
+                  onPressed: (){
+                    widget.auth.signOut();
+                    Navigator.pop(context);
+                  },
+                ),
+                FlatButton(
+                  child: Text('Go Back'),
+                  onPressed: (){
+                    setState(() {_requestingLogOut = false;});
+                  },
+                )
+              ],
+            ) 
+            :
+            Container(height: 0.0)
           ],
-        ),
+        )
       )
     );
   } 

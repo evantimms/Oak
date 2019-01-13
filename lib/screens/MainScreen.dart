@@ -7,6 +7,9 @@ import '../screens/SettingsScreen.dart';
 import '../screens/TransactionScreen.dart';
 
 class MainScreen extends StatefulWidget{
+  final auth;
+
+  MainScreen({this.auth});
 
   @override
   _MainScreenState createState() => new _MainScreenState(); 
@@ -40,7 +43,7 @@ class _MainScreenState extends State<MainScreen>  with TickerProviderStateMixin 
             onPressed: (){
               Navigator.push(
                 context, 
-                MaterialPageRoute(builder: (context) => SettingsScreen()),
+                MaterialPageRoute(builder: (context) => SettingsScreen(auth: widget.auth )),
               );
             },
           ),
