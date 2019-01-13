@@ -9,7 +9,29 @@ class SettingsScreen extends StatelessWidget {
         title: Text("Settings"),
       ),
       body: Center(
-        child: Text("Settings Screeen"),
+        child: ListView(
+          // TODO: Use the ListView.builder constructor to return settings based on user information
+          children: <Widget>[
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text('Evan'),
+              trailing: Icon(Icons.arrow_forward),
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.email),
+              title: Text('Email'),
+              subtitle: Text('timmsevan@gmail.com'),
+              trailing: Icon(Icons.arrow_forward),
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.power_settings_new),
+              title: Text('Log Out'),
+              trailing: Icon(Icons.arrow_forward),
+            )
+          ],
+        ),
       )
     );
   } 
