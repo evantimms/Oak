@@ -35,8 +35,10 @@ We also have a couple components that will need to be reused throughout the app,
 Using the outline of the features above, the first step in this project is to create a basic user interface that models the functionality of the app. This will not have a connection to a backend database, nor any authentication/notification system. 
 
 ### PHASE II: Uploading and File Viewing System
+For this app to be successful, the user must have a easy to use and intuitive note viewing system. This comes in two parts, the uploading of notes and the viewing of other peoples notes. The uploading portion will use the users camera on their smartphone to initially take pictures of the notes. Then, by using a combination of a report/rating system and Google's Cloud machine learning platform we can reduce the risk that files other than notes are uploaded. A user will be able to save notes, view a preview of them and purchase the rights to view them for tokens.
 
 ### PHASE III: Authentication and Validation
+Initially, email/password validation would be the most straightforward type of authentication. Later authentication via facebook and google would also be nice to have.
 
 ### PHASE IV: Token System
 
