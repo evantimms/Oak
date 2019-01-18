@@ -1,13 +1,23 @@
-import 'package:flutter_note_app/model/course.dart';
-import 'package:flutter_note_app/model/note.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'user.g.dart';
+
+@JsonSerializable()
 class User{
+
+  User();
+
   String username;
   String name;
   String email;
+  String uuid;
   int tokens;
 
-  List<Note> createdNotes;
-  List<Note> subscribedNotes;
-  List<Course> subscribedCourses;
+  List<String> createdNoteIDs;
+  List<String> subscribedNoteIDs;
+  List<String> subscribedCourseIDs;
+
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserToJson(this);
 }

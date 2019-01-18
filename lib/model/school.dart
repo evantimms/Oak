@@ -1,8 +1,19 @@
-import 'package:flutter_note_app/model/course.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'school.g.dart';
+
+@JsonSerializable()
 class School {
+
+  School();
+
+  String id;
+
   String name;
   String location;
 
-  List<Course> courses;
+  List<String> courseIDs;
+  factory School.fromJson(Map<String, dynamic> json) => _$SchoolFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SchoolToJson(this);
 }
