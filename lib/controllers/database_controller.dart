@@ -26,15 +26,22 @@ class DatabaseController {
     return user;
   }
 
+  Future<void> deleteUser(String uuid) async {
+    final DocumentReference docReference = firestore.collection(_userCollection).document(uuid);
+    await docReference.delete();
+  }
+
 
 
 
   // --- School functions ---
-  Future<void> addSchool(School school) async {
+  Future<String> addSchool(School school) async {
     final DocumentReference docReference = firestore.collection(_schoolCollection).document();
 
     school.id = docReference.documentID;
     await docReference.setData(school.toJson());
+
+    return docReference.documentID;
   }
 
   Future<void> updateSchool(School school) async {
@@ -60,11 +67,13 @@ class DatabaseController {
 
 
   // --- Course Functions ---
-  Future<void> addCourse(Course course, String schoolId) async {
+  Future<String> addCourse(Course course, String schoolId) async {
     final DocumentReference docReference = firestore.collection(_schoolCollection).document(schoolId).collection(_courseCollection).document();
 
     course.id = docReference.documentID;
     await docReference.setData(course.toJson());
+
+    return docReference.documentID;
   }
 
   Future<void> updateCourse(Course course, String schoolId) async {
@@ -90,11 +99,13 @@ class DatabaseController {
 
 
   // --- Note Functions ---
-  Future<void> addNote(Note note) async {
+  Future<String> addNote(Note note) async {
     final DocumentReference docReference = firestore.collection(_noteCollection).document();
 
     note.id = docReference.documentID;
     await docReference.setData(note.toJson());
+
+    return docReference.documentID;
   }
 
   Future<void> updateNote(Note note) async {
