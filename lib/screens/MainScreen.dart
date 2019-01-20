@@ -5,6 +5,7 @@ import '../screens/UploadScreen.dart';
 import '../screens/SearchScreen.dart';
 import '../screens/SettingsScreen.dart';
 import '../screens/TransactionScreen.dart';
+import '../screens/DatabaseTestScreen.dart';
 
 class MainScreen extends StatefulWidget{
   final auth;
@@ -55,7 +56,18 @@ class _MainScreenState extends State<MainScreen>  with TickerProviderStateMixin 
                 MaterialPageRoute(builder: (context) => TransactionScreen()),
               );
             },
-          )
+          ),
+          // Temporary button for database testing page
+          // TODO: Remove this button
+          IconButton (
+            icon: Icon(Icons.accessibility),
+            onPressed: () {
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => DatabaseTestPage()),
+              );
+            },
+            )
         ],
       ),
       body: _children[_currentIndex],

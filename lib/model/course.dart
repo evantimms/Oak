@@ -1,6 +1,14 @@
-import 'package:flutter_note_app/model/note.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'course.g.dart';
+
+@JsonSerializable()
 class Course {
+
+  Course();
+
+  String id;
+
   String name;
   String proffesor;
   String semester; //Likely unecessary with start date and end date
@@ -8,5 +16,9 @@ class Course {
   DateTime startDate;
   DateTime endDate;
   
-  List<Note> notes;
+  List<String> noteIDs;
+
+  factory Course.fromJson(Map<String, dynamic> json) => _$CourseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CourseToJson(this);
 }
