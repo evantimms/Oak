@@ -1,31 +1,75 @@
 import 'package:flutter/material.dart';
 
-class CardScreen extends StatelessWidget {
+class CardScreen extends StatefulWidget {
+  
+  @override
+  _CardScreenState createState() => _CardScreenState();
+}
+
+class _CardScreenState extends State<CardScreen> {
+
+  final List<Widget> _previewImageList = <Widget>[
+    Image.asset(
+      'images/note1.jpg',
+      height: 300,
+      width: 400,
+      fit: BoxFit.cover,
+    ),
+    Image.asset(
+      'images/note2.jpg',
+      height: 300,
+      width: 400,
+      fit: BoxFit.cover,
+    ),
+  ];
+
+  int _currentIndex = 0;
+
   @override 
   Widget build(BuildContext context){
-    Widget previewImage = Image.asset(
-      'images/stock.jpg',
-      height: 260.0,
-      width: 500,
-      fit: BoxFit.cover,
-    );
+    
+
+    Widget previewImage = Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Dismissible(
+        resizeDuration: null,
+        onDismissed: (DismissDirection direction) {
+          int indexChange = direction == DismissDirection.endToStart ? 1 : -1;
+          if ((_currentIndex == 0 && indexChange == -1) || 
+          (_currentIndex == _previewImageList.length - 1 && indexChange == 1)) indexChange = 0;
+          setState(() {
+            _currentIndex = _currentIndex + indexChange;
+          });
+        },
+        key: ValueKey(this._currentIndex),
+        child: this._previewImageList[_currentIndex],
+        
+      )
+      
+     );
 
     Widget descriptionSection = Container(
       padding: EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(top: 4.0),
+          Container(
             child: Text(
-              'Title',
+              'ECE 311',
               textScaleFactor: 2.0,
               textAlign: TextAlign.left,
             ),
           ),
           Padding(
-              padding: EdgeInsets.only(top: 4.0),
-              child: Text(
-                'Description'
+            padding: EdgeInsets.symmetric(vertical: 4.0),
+            child: Text('02/02/2018'),
+          ),
+          Padding(
+              padding: EdgeInsets.only(left: 4.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                'From Dr. Timms class Monday. This covers sections 4.3-4.5.'
+                ),
               )  
           )
         ],
@@ -36,23 +80,24 @@ class CardScreen extends StatelessWidget {
 
     Widget viewButton = Expanded(
       child: Align(
-        alignment: Alignment.bottomCenter,
-        child: Row(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Icon(Icons.lock),
-                Text('Unlock')
-              ],
-            )
-          ],
+        alignment:  Alignment.bottomCenter,
+        child:  RaisedButton(
+          onPressed: () {},
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(Icons.lock_open, color: Colors.white,),
+              Text('Unlock These Notes', style: TextStyle(color: Colors.white))
+            ],
+          ),
+          color: Colors.blue,
         ),
       ),
     );
 
     return new Scaffold(
       appBar: AppBar(
-        title: Text('Note Title'),
+        title: Text('ECE 311'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.report),
@@ -64,7 +109,6 @@ class CardScreen extends StatelessWidget {
             children: <Widget>[
               previewImage,
               descriptionSection,
-              SizedBox(height: 100, width: 200),
               viewButton
             ],
           )

@@ -11,6 +11,11 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
 
+  List _getFakeDataRequest () {
+    
+    return [];
+  }
+
   Widget _handleCurrentScreen() {
     return new StreamBuilder<FirebaseUser>(
       stream: FirebaseAuth.instance.onAuthStateChanged,
