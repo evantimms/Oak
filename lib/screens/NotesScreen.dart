@@ -32,8 +32,8 @@ class _NotesScreenState extends State<NotesScreen> with TickerProviderStateMixin
               // height: 300.0,
               child: TabBarView(
                 children: <Widget>[
-                  NoteList(),
-                  NoteList()
+                  NoteList('saved'),
+                  NoteList('featured')
                 ],
               ),
             )
