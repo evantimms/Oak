@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 
 class CardScreen extends StatefulWidget {
+  var data;
+
+  CardScreen (data) {
+    this.data = data;
+  }
   
   @override
-  _CardScreenState createState() => _CardScreenState();
+  _CardScreenState createState() => _CardScreenState(data);
 }
 
 class _CardScreenState extends State<CardScreen> {
+  var data;
+
+  _CardScreenState (data) {
+    this.data = data;
+  }
 
   final List<Widget> _previewImageList = <Widget>[
     Image.asset(
@@ -27,7 +37,7 @@ class _CardScreenState extends State<CardScreen> {
 
   @override 
   Widget build(BuildContext context){
-    
+
 
     Widget previewImage = Padding(
       padding: EdgeInsets.all(8.0),
@@ -54,21 +64,21 @@ class _CardScreenState extends State<CardScreen> {
         children: <Widget>[
           Container(
             child: Text(
-              'ECE 311',
+              data['title'],
               textScaleFactor: 2.0,
               textAlign: TextAlign.left,
             ),
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 4.0),
-            child: Text('02/02/2018'),
+            child: Text(data['dateCreated'].toString()),
           ),
           Padding(
               padding: EdgeInsets.only(left: 4.0),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                'From Dr. Timms class Monday. This covers sections 4.3-4.5.'
+                 data['description']
                 ),
               )  
           )

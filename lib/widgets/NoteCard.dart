@@ -3,32 +3,22 @@ import '../screens/CardScreen.dart';
 
 
 class NoteCard extends StatelessWidget {
-  String createdBy;
-  String title;
-  String description;
-  String coursePrefix;
-  String courseNumber;
-  String school;
+  var data;
 
 
   NoteCard (data) {
-    this.createdBy = data.createdBy;
-    this.title = data.title;
-    this.description = data.description;
-    this.coursePrefix = data.coursePrefix;
-    this.courseNumber = data.courseNumber;
-    this.school = data.school;
+    this.data = data;
   }
 
-  void _handleOnTap(BuildContext context){
+  void _handleOnTap(BuildContext context, Object data){
     Navigator.push(context, 
-    MaterialPageRoute(builder: (context) => new CardScreen()));
+    MaterialPageRoute(builder: (context) => new CardScreen(data)));
   }
 
   @override
   Widget build(BuildContext context){
     return new InkWell(
-      onTap: (){_handleOnTap(context);},
+      onTap: (){_handleOnTap(context, data);},
       child: Card(
         clipBehavior: Clip.antiAlias,
         child: Column(
@@ -45,9 +35,9 @@ class NoteCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(this.title),
+                    Text(this.data['title']),
                     SizedBox(height: 8.0),
-                    Text(this.coursePrefix + this.courseNumber)
+                    Text(this.data['coursePrefix'] + this.data['courseNumber'])
                   ],
                 ),
               ),
