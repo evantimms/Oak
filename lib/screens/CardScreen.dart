@@ -53,7 +53,6 @@ class _CardScreenState extends State<CardScreen> {
         },
         key: ValueKey(this._currentIndex),
         child: this._previewImageList[_currentIndex],
-        
       )
       
      );

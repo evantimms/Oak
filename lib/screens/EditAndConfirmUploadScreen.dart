@@ -1,55 +1,150 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class EditAndConfirmUploadScreen extends StatefulWidget {
-  final imagePaths;
-  EditAndConfirmUploadScreen({this.imagePaths});
-  _EditAndConfirmUploadScreenState createState() => new _EditAndConfirmUploadScreenState(imagePaths: imagePaths);
+  List<String> _imagePaths;
+  EditAndConfirmUploadScreen(_imagePaths) {
+    this._imagePaths =_imagePaths;
+  }
+
+  _EditAndConfirmUploadScreenState createState() => new _EditAndConfirmUploadScreenState(_imagePaths);
 
 }
 
 class _EditAndConfirmUploadScreenState extends State<EditAndConfirmUploadScreen> {
-  List<String> imagePaths;
+  List<String> _imagePaths;
+  List<Widget> _imageList;
   final _formKey = GlobalKey<FormState>();
-  bool _formSubmitted = false;
+  bool _formIsUploadConfirm = false;
+  bool _formIsExitConfirm = false;
+  int _currentIndex;
+  Map _data = { };
 
-  _EditAndConfirmUploadScreenState({this.imagePaths}); 
+  _EditAndConfirmUploadScreenState(imagePaths) {
+    this._imagePaths = imagePaths;
+    this._currentIndex = 0;
+  } 
 
-  Widget _buildPictures() {
-    return Container();
+  List<Widget> _buildImageList() {
+    return List<GestureDetector>.generate(_imagePaths.length, (index){
+      String currentImagePath = _imagePaths[index];
+      return GestureDetector(
+        onTap: (){print('tapped image' + currentImagePath);},
+        child: Image.file(File(currentImagePath))
+      );
+    });
   }
 
-  void _handleUpload() {
 
+  Future<void> _showModalConfirm(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        if (_formIsUploadConfirm) {
+          return AlertDialog(
+            title: Text('Do you want to upload these notes?'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Yes'),
+                onPressed: (){
+                  Navigator.of(context).pop();
+                  _onUploadConfirm();
+                },
+              ),
+              FlatButton(
+                child: Text('Go Back'),
+                onPressed: (){
+                  setState(() {_formIsUploadConfirm = false;});
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ); 
+        } else if (_formIsExitConfirm) {
+          return AlertDialog(
+            title: Text('Do you want to discard this '),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Yes'),
+                onPressed: (){
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
+                child: Text('Go Back'),
+                onPressed: (){
+                  setState(() {_formIsExitConfirm = false;});
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ); 
+        }
+      }
+    );
+  }
+
+  void _onUploadConfirm() {
+    // 1. Fetch and format data from Form
+    // 2. Get Image files
+    // 3. Upload to server
+    _formKey.currentState.save();
+    print(_data.toString()); 
+  }
+
+  void _uploadNoteSet() async {
+   
   }
 
   @override 
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-      ),
-      body: Column(
+    this._imageList = _buildImageList();
+
+    Widget noteList = Padding(
+      padding: const EdgeInsets.all(16.0),
+      child:  Dismissible(
+        resizeDuration: null,
+        onDismissed: (DismissDirection direction) {
+          int indexChange = direction == DismissDirection.endToStart ? 1 : -1;
+          if ((_currentIndex == 0 && indexChange == -1) || 
+          (_currentIndex == _imageList.length - 1 && indexChange == 1)) indexChange = 0;
+          setState(() {
+            _currentIndex = _currentIndex + indexChange;
+          });
+        },
+        key: ValueKey(_currentIndex),
+        child: _imageList[_currentIndex],
+      )
+    );
+
+
+    Widget noteForm = Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Expanded(
-            child: _buildPictures(),
+          TextFormField(
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'Enter A Title';
+              }
+            },
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              labelText: 'Title'
+            ),
+            onSaved: (value) => _data['title'] = value
           ),
-          Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                TextFormField(
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Enter A Title';
-                    }
-                  },
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    labelText: 'Please Enter A Title'
-                  ),
-                ),
-                TextFormField(
+          Row (
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Flexible(
+                child:  TextFormField(
                   validator: (value) {
                     if (value.isEmpty) {
                       return 'Enter A Course Prefix';
@@ -57,10 +152,13 @@ class _EditAndConfirmUploadScreenState extends State<EditAndConfirmUploadScreen>
                   },
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    labelText: 'Please Enter A Course Prefix'
+                    labelText: 'Course Prefix'
                   ),
+                  onSaved: (value) => _data['coursePrefix'] = value
                 ),
-                TextFormField(
+              ),
+              Flexible(
+                child:  TextFormField(
                   validator: (value) {
                     if (value.isEmpty) {
                       return 'Enter A Course Number';
@@ -68,67 +166,75 @@ class _EditAndConfirmUploadScreenState extends State<EditAndConfirmUploadScreen>
                   },
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    labelText: 'Please Enter A Course Number'
+                    labelText: 'Course Number'
                   ),
+                  onSaved: (value) => _data['courseNumber'] = value
                 ),
-                TextFormField(
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Enter A Description';
-                    }
-                  },
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    labelText: 'Please Enter A Description'
-                  ),
-                ),
-                TextFormField(
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'School?';
-                    }
-                  },
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    labelText: 'Please Enter School'
-                  ),
-                ),
-                Row(
-                  children: <Widget>[
-                    RaisedButton(
-                      onPressed: (){},
-                      child: Text('Retake Set'),
-                    ),
-                    RaisedButton(
-                      onPressed: _handleUpload,
-                      child: Text('Upload Set'),
-                    )
-                  ],
-                ),
-                (_formSubmitted == true) ?
-                AlertDialog(
-                  title: Text('Are you sure you want to logout?'),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: Text('Yes'),
-                      onPressed: (){
-                        Navigator.pop(context);
-                      },
-                    ),
-                    FlatButton(
-                      child: Text('Go Back'),
-                      onPressed: (){
-                        setState(() {_formSubmitted = false;});
-                      },
-                    )
-                  ],
-                ) 
-                :
-                Container()
-              ],
+              )
+            ],
+          ),
+          TextFormField(
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'Enter A Description';
+              }
+            },
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              labelText: 'Description'
             ),
-          )
-          
+            onSaved: (value) => _data['desc'] = value
+          ),
+          TextFormField(
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'Please Enter a School';
+              }
+            },
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              labelText: 'School'
+            ),
+            onSaved: (value) => _data['school'] = value,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              RaisedButton(
+                onPressed: (){
+                  setState(() {
+                    _formIsExitConfirm = true;
+                  });
+                  _showModalConfirm(context);
+                },
+                child: Text('Discard Set'),
+              ),
+              RaisedButton(
+                onPressed: () {
+                  if (_formKey.currentState.validate()) {
+                    setState(() {
+                    _formIsUploadConfirm = true;
+                    });
+                    _showModalConfirm(context);
+                  }      
+                },
+                child: Text('Upload Set'),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+
+
+    return Scaffold(
+      appBar: AppBar(
+      ),
+      body: ListView(
+        children: <Widget>[
+          noteList,
+          noteForm
         ],
       ),
     );

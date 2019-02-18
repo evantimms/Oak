@@ -14,20 +14,20 @@ class UploadScreen extends StatefulWidget {
 
 
 class _UploadScreenState extends State<UploadScreen> {
-  CameraController camController;
-  bool isEditMode;
-  List<String> imagePaths;
-  String currentImagePath;
+  CameraController _controller;
+  bool _isEditMode;
+  List<String> _imagePaths;
+  String _currentImagePath;
 
   Future<void> _getAvailableCameras() async {
     cameras = await availableCameras();
-    camController = CameraController(cameras[0], ResolutionPreset.medium);
-    camController.initialize().then((_) {
+    _controller = CameraController(cameras[0], ResolutionPreset.medium);
+    _controller.initialize().then((_) {
       if (!mounted) return;
       else setState((){
-        isEditMode = false;
-        currentImagePath = '';
-        imagePaths = [];
+        _isEditMode = false;
+        _currentImagePath = '';
+        _imagePaths = [];
       });
     });
   }
@@ -40,14 +40,14 @@ class _UploadScreenState extends State<UploadScreen> {
 
   @override
   void dispose() {
-    camController?.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 
   String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
 
   Future<String> _takePicture() async {
-    if (!camController.value.isInitialized) {
+    if (!_controller.value.isInitialized) {
       return null;
     }
     final Directory extDir = await getApplicationDocumentsDirectory();
@@ -55,13 +55,13 @@ class _UploadScreenState extends State<UploadScreen> {
     await Directory(dirPath).create(recursive: true);
     final String filePath = '$dirPath/${timestamp()}.jpg';
     
-    if (camController.value.isTakingPicture) {
+    if (_controller.value.isTakingPicture) {
       return null;
     }
 
     // get picture
     try {
-      await camController.takePicture(filePath);
+      await _controller.takePicture(filePath);
     } on CameraException catch (e) {
       print(e);
       return null;
@@ -74,8 +74,8 @@ class _UploadScreenState extends State<UploadScreen> {
     _takePicture().then((String filePath){
       if (filePath != null) {
         setState(() {
-          isEditMode = true; 
-          currentImagePath = filePath;
+          _isEditMode = true; 
+          _currentImagePath = filePath;
         });
       }
     });
@@ -83,61 +83,59 @@ class _UploadScreenState extends State<UploadScreen> {
   }
 
   void _onPictureRetake() {
-    imagePaths.remove(currentImagePath);
+    _imagePaths.remove(_currentImagePath);
     this.setState((){
-      isEditMode = false;
-      currentImagePath = '';
+      _isEditMode = false;
+      _currentImagePath = '';
     });
   }
 
   void _onPictureSave() {
-    if (currentImagePath != null && currentImagePath.length > 0) {
-      imagePaths.add(currentImagePath);
+    if (_currentImagePath != null && _currentImagePath.length > 0) {
+      _imagePaths.add(_currentImagePath);
       setState(() {
-       currentImagePath = '';
-       isEditMode = false; 
+       _currentImagePath = '';
+       _isEditMode = false; 
       });
     }
     
   }
 
-  void _onUserFinish() {
-    if (currentImagePath != null && currentImagePath.length > 0) {
-      imagePaths.add(currentImagePath);
+  void _onUserFinish() async {
+    if (_currentImagePath != null && _currentImagePath.length > 0) {
+      _imagePaths.add(_currentImagePath);
     }
-
-    Navigator.push(
+    print(_imagePaths);
+    await Navigator.push(
       context, 
-      MaterialPageRoute(builder: (context) => EditAndConfirmUploadScreen(imagePaths: imagePaths)),
+      MaterialPageRoute(builder: (context) => EditAndConfirmUploadScreen(_imagePaths)),
     );
     setState(() {
-      imagePaths = [];
-      currentImagePath = '';
-      isEditMode = false;
+      _imagePaths = [];
+      _currentImagePath = '';
+      _isEditMode = false;
     });
     // Navigate to confirmation page
     
   }
   // ======================================
   Widget _getCameraOrPreviewDisplay() {
-    print(currentImagePath);
-    print(isEditMode);
-    if (camController == null || !camController.value.isInitialized) {
+    if (_controller == null || !_controller.value.isInitialized) {
       return Text(
         'No Camera Found',
         style: TextStyle(
           fontSize: 24
         ),
       );
-    } else if (isEditMode && currentImagePath.length > 0) {
+    } else if (_isEditMode && _currentImagePath.length > 0) {
       return AspectRatio(
-        aspectRatio: camController.value.aspectRatio,
-        child: Image.file(File(currentImagePath))
+        aspectRatio: _controller.value.aspectRatio,
+        child: Image.file(File(_currentImagePath))
       );
-    } else if (!isEditMode && camController != null && camController.value.isInitialized) {
+    } else if (!_isEditMode && _controller != null && _controller.value.isInitialized) {
       return AspectRatio(
-        aspectRatio: camController.value.aspectRatio,
-        child: CameraPreview(camController),
+        aspectRatio: _controller.value.aspectRatio,
+        child: CameraPreview(_controller),
       );
     } else {
       // Return a loading indicator
@@ -166,12 +164,12 @@ class _UploadScreenState extends State<UploadScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       mainAxisSize: MainAxisSize.max,
-      children: (!isEditMode) ? <Widget>[
+      children: (!_isEditMode) ? <Widget>[
         IconButton(
           icon: Icon(Icons.camera_alt),
           color: Colors.blueAccent,
-          onPressed: (camController != null &&
-          camController.value.isInitialized) ?
+          onPressed: (_controller != null &&
+          _controller.value.isInitialized) ?
           _onPictureCapture : null,
         )
       ] : _getEditControls()
@@ -181,7 +179,7 @@ class _UploadScreenState extends State<UploadScreen> {
 
   @override
   Widget build(BuildContext context){
-    if (camController == null || !camController.value.isInitialized) {
+    if (_controller == null || !_controller.value.isInitialized) {
       return Container();
     }
     else {
@@ -198,7 +196,7 @@ class _UploadScreenState extends State<UploadScreen> {
                 decoration: BoxDecoration(
                   color: Colors.black,
                   border: Border.all(
-                    color: camController != null && camController.value.isRecordingVideo
+                    color: _controller != null && _controller.value.isRecordingVideo
                         ? Colors.redAccent
                         : Colors.grey,
                     width: 3.0,

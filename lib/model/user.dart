@@ -1,4 +1,3 @@
-import 'package:flutter_note_app/model/course.dart';
 import 'package:flutter_note_app/model/note.dart';
 
 class User{
@@ -8,6 +7,5 @@ class User{
   int tokens;
 
   List<Note> createdNotes;
-  List<Note> subscribedNotes;
-  List<Course> subscribedCourses;
+  List<Note> savedNotes;
 }
