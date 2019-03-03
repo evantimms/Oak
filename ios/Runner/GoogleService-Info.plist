@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>966266910128-i3ka4lfmnk7ek1d6s8gt1ca7rgt804pl.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.966266910128-i3ka4lfmnk7ek1d6s8gt1ca7rgt804pl</string>
+	<key>API_KEY</key>
+	<string>AIzaSyD13vN-DcF6TIJzhgdpmU7vGG7t6fGR4JM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>966266910128</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.flutterNoteApp</string>
+	<key>PROJECT_ID</key>
+	<string>noted-4ee2f</string>
+	<key>STORAGE_BUCKET</key>
+	<string>noted-4ee2f.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true></true>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false></false>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:966266910128:ios:b61c3eefdd72fdf9</string>
+	<key>DATABASE_URL</key>
+	<string>https://noted-4ee2f.firebaseio.com</string>
+</dict>
+</plist>
