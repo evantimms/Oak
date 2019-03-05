@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:966266910128:android:ee1181c2e5824f9d",
+        "mobilesdk_app_id": "1:966266910128:android:040f00c88fb2140e",
         "android_client_info": {
-          "package_name": "com.example.flutternoteapp"
+          "package_name": "com.evantimms.oak"
         }
       },
       "oauth_client": [

@@ -1,4 +1,4 @@
-package com.example.flutternoteapp;
+package com.example.oak;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

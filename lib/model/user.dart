@@ -1,4 +1,4 @@
-import 'package:flutter_note_app/model/note.dart';
+import 'package:Oak/model/note.dart';
 
 class User{
   String username;

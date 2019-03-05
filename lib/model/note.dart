@@ -1,4 +1,4 @@
-import 'package:flutter_note_app/model/user.dart';
+import 'package:Oak/model/user.dart';
 
 class Note {
   User createdBy;
