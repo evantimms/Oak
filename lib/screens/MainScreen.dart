@@ -36,7 +36,7 @@ class _MainScreenState extends State<MainScreen>  with TickerProviderStateMixin 
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text("NOTED"),
+        title: Text("Oak"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),

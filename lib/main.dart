@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Noted',
+      title: 'Oak',
       theme: ThemeData(),
       home: _handleCurrentScreen()
     );

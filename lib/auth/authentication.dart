@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../model/user.dart';
 
+// TODO: This needs to be refactored to be useful
 // Base class that is useful if we ever need to switch implementations
 abstract class BaseAuth {
   Future<String> signIn(String email, String password);
