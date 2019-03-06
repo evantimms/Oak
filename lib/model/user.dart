@@ -1,4 +1,5 @@
 import 'package:Oak/model/note.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class User{
   String _id;
@@ -42,6 +43,17 @@ class User{
     _createdNotes = snapshot.value['created_notes'];
     _savedNotes = snapshot.value['saved_notes'];
 
+  }
+
+  toObject() {
+    return {
+      'id':_id,
+      'username':_username,
+      'email':_email,
+      'tokens':_tokens,
+      'createdNotes':_createdNotes,
+      'savedNotes':_savedNotes,
+    };
   }
 
 }

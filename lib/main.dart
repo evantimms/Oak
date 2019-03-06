@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'screens/MainScreen.dart';
 import 'screens/LoginScreen.dart';
 import 'screens/SplashScreen.dart';
-import 'auth/authentication.dart';
+import 'auth/Authenticator.dart';
 
-Auth authenticator = new Auth();
+Authenticator auth = new Authenticator();
 
 void main() => runApp(MyApp());
 
@@ -20,9 +20,10 @@ class MyApp extends StatelessWidget {
           return new SplashScreen();
         } else {
           if (snapshot.hasData) {
-            return new MainScreen(auth: authenticator);
+            auth.getCurrentUser();
+            return new MainScreen();
           }
-          return new LoginScreen(auth: authenticator);
+          return new LoginScreen();
         }
       }
     );

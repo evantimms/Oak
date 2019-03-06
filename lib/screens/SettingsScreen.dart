@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import '../auth/authentication.dart';
-class SettingsScreen extends StatefulWidget {
-  final auth;
+import '../auth/Authenticator.dart';
 
-  SettingsScreen({this.auth});
+Authenticator authenticator = new Authenticator();
+
+class SettingsScreen extends StatefulWidget {
 
   _SettingScreenState createState() => new _SettingScreenState();
 
- 
 }
 
 class _SettingScreenState extends State<SettingsScreen>{
@@ -52,7 +51,7 @@ class _SettingScreenState extends State<SettingsScreen>{
                 FlatButton(
                   child: Text('Yes'),
                   onPressed: (){
-                    widget.auth.signOut();
+                    authenticator.signOut();
                     Navigator.pop(context);
                   },
                 ),

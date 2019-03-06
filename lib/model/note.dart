@@ -1,5 +1,5 @@
 import 'package:Oak/model/user.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class Note {
   String _id;
