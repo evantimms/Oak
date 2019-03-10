@@ -1,0 +1,18 @@
+For minimum working app we need:
+
+1. Updated Models - DONE
+2. Refactor Authentication 
+3. Uploading Note & Storing images.
+4. Downloading Notes and images in Main Screen.
+
+Chase:
+- Look into Firebase ML kit for image recognition.
+- UI Enhancements:
+    - Note Cards
+    - Upload Screen
+- Search 
+
+
+Evan:
+- Finish Backend And Database Integration.
+- Note upload and download. 

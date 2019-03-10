@@ -5,10 +5,14 @@ enum FormMode {
   LOGIN, SIGNUP
 }
 
-class LoginScreen extends StatefulWidget {
-  final auth;
+Authenticator auth = new Authenticator();
 
-  LoginScreen({this.auth});
+class LoginScreen extends StatefulWidget {
+
+  LoginScreen({ this.login, this.signup });
+
+  final Function login;
+  final Function signup;
 
   @override
   _LoginScreenState createState()=> new _LoginScreenState();
@@ -21,9 +25,6 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isloading = false;
   var _formMode = FormMode.LOGIN;
   final _formKey = GlobalKey<FormState>();
-
-
-  //TODO: Add logo widget above emailInput
 
   Widget _showCircularProgress(){
     if (_isloading) {
@@ -51,29 +52,26 @@ class _LoginScreenState extends State<LoginScreen> {
   
   _handleLoginRequest() async {
     final form = _formKey.currentState;
-    String userId;
     setState((){
       _error = '';
       _isloading = true;
     });
     form.save();
     if(form.validate()){
-      try {
-        if(_formMode == FormMode.LOGIN){
-          userId = await widget.auth.signIn(_email, _password);
-        }
-        else if(_formMode == FormMode.SIGNUP){
-          userId = await widget.auth.signUp(_email, _password);
-        }
-        print('Signed in as $userId');
-      }catch(e){
-        print('Error: $e');
+      var errorMessage;
+      if(_formMode == FormMode.LOGIN){
+        errorMessage = await widget.login(_email, _password);
+      }
+      else if(_formMode == FormMode.SIGNUP){
+        errorMessage = await widget.signup(_email, _password, 'username');
+      }
+      if (errorMessage != null) {
         setState(() {
           _isloading = false;
           if (Theme.of(context).platform == TargetPlatform.iOS) {
-            _error = e.details;
-          } else
-            _error = e.message;
+            _error = errorMessage.message;
+          } else _error = errorMessage.details;
+          // print(_error);
         });
       }
     }

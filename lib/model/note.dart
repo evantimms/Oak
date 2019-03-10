@@ -43,5 +43,15 @@ class Note {
     _school = snapshot.value['school'];
   }
 
+  toObject() {
+    return {
+      'id':_id,
+      'title':_title,
+      'description':_description,
+      'course_number':_courseNumber,
+      'course_prefix':_coursePrefix,
+      'school':_school
+    };
+  }
 
 }

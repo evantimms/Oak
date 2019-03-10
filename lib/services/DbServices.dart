@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../model/note.dart';
 import '../model/user.dart';
 
@@ -8,43 +9,49 @@ final dBReference = FirebaseDatabase.instance.reference();
 final usersReference  = dBReference.child('users');
 final notesReference = dBReference.child('notes');
 
-class ServiceFile {
+class DbServices {
 
-  Future<void> addNewUserInDB(User user) {
-    usersReference.push().set(user.toObject()).then((_){
+  static Future<User> getUserFromFBUser(FirebaseUser fbUser) {
+    String email = fbUser.email;
+    usersReference.orderByChild('email').equalTo(email).once().then((data){
+      return User.fromSnapshot(data);
+    }).catchError((onError){
+      print(onError);
+    });
+  }
 
+  // CRUD using normal user model
+  static Future<void> addNewUserInDB(User user) {
+    usersReference.push().set(user.toObject()).then((_) {
+      return User;
     }); 
   }
 
-  Future<void> updateCurrentUserInDB(User user) {
-    usersReference.child(user.id).set(user.toObject()).then((_) {
-
-    });
+  static Future<void> updateCurrentUserInDB(User user) {
+    usersReference.child(user.id).set(user.toObject());
   }
 
-  Future<User> readCurrentUserInDB(User user) {
-
-  }
-
-  Future<void> deleteUserInDB(User user) {
-    usersReference.child(user.id).remove().then((_) {
-
-    });
-  }
-
-  Future<void> addNoteSetInDB(Note note) {
+  static Future<void> readCurrentUserInDB(User user) {
 
   }
 
-  Future<void> updateNoteSetInDB(Note note) {
+  static Future<void> deleteUserInDB(User user) {
+    usersReference.child(user.id).remove();
+  }
+
+  static Future<void> addNoteSetInDB(Note note) {
 
   }
 
-  Future<void> readNoteSetInDB(Note note) {
+  static Future<void> updateNoteSetInDB(Note note) {
 
   }
 
-  Future<void> deleteNoteSetInDB(Note note) {
+  static Future<void> readNoteSetInDB(Note note) {
+
+  }
+
+  static Future<void> deleteNoteSetInDB(Note note) {
 
   }
 }

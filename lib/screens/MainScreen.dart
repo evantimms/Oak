@@ -5,8 +5,14 @@ import '../screens/UploadScreen.dart';
 import '../screens/SearchScreen.dart';
 import '../screens/SettingsScreen.dart';
 import '../screens/TransactionScreen.dart';
+import '../model/user.dart';
 
 class MainScreen extends StatefulWidget{
+  MainScreen({ this.currentUser, this.signout });
+
+  final User currentUser;
+  final VoidCallback signout;
+
   @override
   _MainScreenState createState() => new _MainScreenState(); 
 }
@@ -39,7 +45,7 @@ class _MainScreenState extends State<MainScreen>  with TickerProviderStateMixin 
             onPressed: (){
               Navigator.push(
                 context, 
-                MaterialPageRoute(builder: (context) => SettingsScreen()),
+                MaterialPageRoute(builder: (context) => SettingsScreen(signout: widget.signout)),
               );
             },
           ),
