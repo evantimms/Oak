@@ -8,6 +8,7 @@ class Note {
   String _coursePrefix;
   String _courseNumber;
   String _school;
+  List<String> _imageIds;
   
   Note(
     this._id,
@@ -15,7 +16,8 @@ class Note {
     this._description, 
     this._courseNumber, 
     this._coursePrefix, 
-    this._school
+    this._school,
+    this._imageIds
   );
 
   String get id => _id;
@@ -24,6 +26,7 @@ class Note {
   String get coursePrefix => _coursePrefix;
   String get courseNumber => _courseNumber;
   String get school => _school;
+  List<String> get imageIds => _imageIds;
 
   Note.map(dynamic obj) {
     this._id = obj['id'];
@@ -41,6 +44,7 @@ class Note {
     _courseNumber = snapshot.value['course_number'];
     _coursePrefix = snapshot.value['course_prefix'];
     _school = snapshot.value['school'];
+    _imageIds =snapshot.value['images_ids'];
   }
 
   toObject() {
@@ -50,7 +54,8 @@ class Note {
       'description':_description,
       'course_number':_courseNumber,
       'course_prefix':_coursePrefix,
-      'school':_school
+      'school':_school,
+      'image_ids': _imageIds
     };
   }
 
