@@ -14,5 +14,8 @@ Chase:
 
 
 Evan:
-- Finish Backend And Database Integration.
-- Note upload and download. 
+- Saved notes page
+- Featured notes page
+- Note Card
+- Save Notes 
+- Search

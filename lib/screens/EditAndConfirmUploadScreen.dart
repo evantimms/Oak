@@ -32,6 +32,16 @@ class _EditAndConfirmUploadScreenState extends State<EditAndConfirmUploadScreen>
     this._currentIndex = 0;
   } 
 
+  void _onUploadConfirm(BuildContext context) {
+    // 1. Fetch and format data from Form
+    // 2. Get Image files
+    // 3. Upload to server
+    _formKey.currentState.save();
+    Note newNote = new Note.map(_data);
+    DbServices.addNoteSetInDB(newNote, _imagePaths);
+    Navigator.popUntil(context, ModalRoute.withName('/home'));
+
+
   List<Widget> _buildImageList() {
     return List<GestureDetector>.generate(_imagePaths.length, (index){
       String currentImagePath = _imagePaths[index];
@@ -55,7 +65,7 @@ class _EditAndConfirmUploadScreenState extends State<EditAndConfirmUploadScreen>
                 child: Text('Yes'),
                 onPressed: (){
                   Navigator.of(context).pop();
-                  _onUploadConfirm();
+                  _onUploadConfirm(context);
                 },
               ),
               FlatButton(
@@ -90,20 +100,6 @@ class _EditAndConfirmUploadScreenState extends State<EditAndConfirmUploadScreen>
         }
       }
     );
-  }
-
-  void _onUploadConfirm() {
-    // 1. Fetch and format data from Form
-    // 2. Get Image files
-    // 3. Upload to server
-    _formKey.currentState.save();
-    Note newNote = new Note.map(_data);
-    _uploadNoteSet(newNote);
-  }
-
-  void _uploadNoteSet(Note note) {
-    DbServices.addNoteSetInDB(note, _imagePaths);
-  //  await StorageServices.uploadImageSet(_imagePaths, note);
   }
 
   @override 
