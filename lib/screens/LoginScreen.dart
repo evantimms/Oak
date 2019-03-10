@@ -63,16 +63,19 @@ class _LoginScreenState extends State<LoginScreen> {
         errorMessage = await widget.login(_email, _password);
       }
       else if(_formMode == FormMode.SIGNUP){
-        errorMessage = await widget.signup(_email, _password, 'username');
+        errorMessage = await widget.signup(_email, _password);
       }
       if (errorMessage != null) {
-        setState(() {
-          _isloading = false;
-          if (Theme.of(context).platform == TargetPlatform.iOS) {
-            _error = errorMessage.message;
-          } else _error = errorMessage.details;
-          // print(_error);
-        });
+        if (errorMessage.runtimeType is String) {
+          _error = errorMessage;
+        } else {
+          setState(() {
+            _isloading = false;
+            if (Theme.of(context).platform == TargetPlatform.iOS) {
+              _error = errorMessage.message;
+            } else _error = errorMessage.details;
+          });
+        }
       }
     }
     setState(() {

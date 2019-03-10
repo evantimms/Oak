@@ -1,17 +1,16 @@
 import 'package:Oak/model/note.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 class User{
-  String _id;
+  String _uid;
   String _username;
   String _email;
   int _tokens;
 
-  List<Note> _createdNotes;
-  List<Note> _savedNotes;
+  List<dynamic> _createdNotes;
+  List<dynamic> _savedNotes;
 
   User(
-    this._id,
+    this._uid,
     this._username,
     this._email,
     this._tokens,
@@ -19,15 +18,15 @@ class User{
     this._savedNotes
   );
 
-  String get id => _id;
+  String get uid => _uid;
   String get username => _username;
   String get email => _email;
   int get tokens => _tokens;
-  List<Note> get createdNotes => _createdNotes;
-  List<Note> get savedNotes => _savedNotes;
+  List<dynamic> get createdNotes => _createdNotes;
+  List<dynamic> get savedNotes => _savedNotes;
 
   User.map(dynamic obj) {
-    this._id = obj['id'];
+    this._uid = obj['uid'];
     this._username = obj['username'];
     this._email = obj['email'];
     this._tokens = obj['tokens'];
@@ -35,24 +34,23 @@ class User{
     this._savedNotes = obj['saved_notes'];
   }
 
-  User.fromSnapshot(DataSnapshot snapshot) {
-    _id = snapshot.key;
-    _username = snapshot.value['username'];
-    _email = snapshot.value['email'];
-    _tokens =snapshot.value['tokens'];
-    _createdNotes = snapshot.value['created_notes'];
-    _savedNotes = snapshot.value['saved_notes'];
-
+  User.fromSnapshot(Map<String, dynamic> snapshot) {
+    _uid = snapshot['uid'];
+    _username = snapshot['username'];
+    _email = snapshot['email'];
+    _tokens =snapshot['tokens'];
+    _createdNotes = snapshot['created_notes'];
+    _savedNotes = snapshot['saved_notes'];
   }
 
   toObject() {
     return {
-      'id':_id,
+      'uid':_uid,
       'username':_username,
       'email':_email,
       'tokens':_tokens,
-      'createdNotes':_createdNotes,
-      'savedNotes':_savedNotes,
+      'created_notes':_createdNotes,
+      'saved_notes':_savedNotes,
     };
   }
 

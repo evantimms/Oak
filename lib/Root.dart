@@ -43,7 +43,7 @@ class _RootState extends State<Root> {
     });
   }
 
-  Future<void> _signout() {
+  _signout() {
     auth.signOut().then((_){
       setState(() {
         current = null;
@@ -55,28 +55,38 @@ class _RootState extends State<Root> {
     });
   }
 
-  Future<void> _signup(String email, String password, String username) {
-    auth.signUp(email, password, username).then((newUser){
+  _signup(String email, String password) async {
+    var response = await auth.signUp(email, password);
+    if (response != null && response is User ) {
+      User user = response;
       setState(() {
-        current = newUser;
-        authStatus = AuthStatus.LOGGED_IN;
-      });
-    }).catchError((e){
-      setState(() { authStatus =AuthStatus.NOT_LOGGED_IN; });
-    });
-  }
-
-  Future<void> _login(String email, String password) {
-    return auth.signIn(email, password).then((newUser){
-      setState(() {
-        current = newUser;
+        current = user;
         authStatus = AuthStatus.LOGGED_IN;
       });
       return null;
-    }).catchError((e){
-      setState(() { authStatus =AuthStatus.NOT_LOGGED_IN; });
-      return e;
-    });
+    } else {
+      setState(() {
+        authStatus =AuthStatus.NOT_LOGGED_IN;
+      });
+      return response;
+    }
+  }
+
+  _login(String email, String password) async {
+    var response = await auth.signIn(email, password);
+    if (response != null && response is User ) {
+      User user = response;
+      setState(() {
+        current = user;
+        authStatus = AuthStatus.LOGGED_IN;
+      });
+      return null;
+    } else {
+      setState(() {
+        authStatus =AuthStatus.NOT_LOGGED_IN;
+      });
+      return response;
+    }
   }
 
   @override 

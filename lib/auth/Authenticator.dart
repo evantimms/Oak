@@ -7,8 +7,8 @@ import '../model/user.dart';
 // TODO: This needs to be refactored to be useful
 // Base class that is useful if we ever need to switch implementations
 abstract class BaseAuth {
-  Future<User> signIn(String email, String password);
-  Future<User> signUp(String email, String password, String username);
+  signIn(String email, String password);
+  signUp(String email, String password);
   Future<User> getCurrentUser();
   Future<void> signOut();
 }
@@ -17,19 +17,33 @@ class Authenticator extends BaseAuth {
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  Future<User> signIn(String email, String password) async {
-    FirebaseUser fbUser = await _firebaseAuth.signInWithEmailAndPassword(email:email, password: password);
-    return await DbServices.getUserFromFBUser(fbUser);
+  signIn(String email, String password) async {
+    try {
+      FirebaseUser fbUser = await _firebaseAuth.signInWithEmailAndPassword(email:email, password: password);
+      return await DbServices.getUserFromFBUser(fbUser);
+    } catch(e) {
+      return e;
+    }
   }
 
-  Future<User> signUp(String email, String password, String username) async {
-    FirebaseUser fbUser = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-    return await DbServices.getUserFromFBUser(fbUser);
+  signUp(String email, String password) async {
+    try {
+      FirebaseUser fbUser = await _firebaseAuth.createUserWithEmailAndPassword(email:email, password: password);
+      return await DbServices.createUserFromFBUser(fbUser);
+    } catch(e) {
+      return e;
+    }
+    
   }
 
-  Future<User> getCurrentUser() async {
-    FirebaseUser fbUser = await _firebaseAuth.currentUser();
-    return await DbServices.getUserFromFBUser(fbUser);
+  getCurrentUser() async {
+    try {
+      FirebaseUser fbUser = await _firebaseAuth.currentUser();
+      return await DbServices.getUserFromFBUser(fbUser);
+    } catch(e) {
+      return e;
+    }
+    
   }
 
   Future<bool> isLoggedIn() async {

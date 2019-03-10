@@ -2,8 +2,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import '../model/note.dart';
+import '../services/DbServices.dart';
+import 'package:uuid/uuid.dart';
+
+final uuid = new Uuid();
 
 class EditAndConfirmUploadScreen extends StatefulWidget {
   List<String> _imagePaths;
@@ -22,7 +25,7 @@ class _EditAndConfirmUploadScreenState extends State<EditAndConfirmUploadScreen>
   bool _formIsUploadConfirm = false;
   bool _formIsExitConfirm = false;
   int _currentIndex;
-  Map _data = { };
+  Map _data = { 'id':uuid.v1() };
 
   _EditAndConfirmUploadScreenState(imagePaths) {
     this._imagePaths = imagePaths;
@@ -94,11 +97,13 @@ class _EditAndConfirmUploadScreenState extends State<EditAndConfirmUploadScreen>
     // 2. Get Image files
     // 3. Upload to server
     _formKey.currentState.save();
-    print(_data.toString()); 
+    Note newNote = new Note.map(_data);
+    _uploadNoteSet(newNote);
   }
 
-  void _uploadNoteSet() async {
-   
+  void _uploadNoteSet(Note note) {
+    DbServices.addNoteSetInDB(note, _imagePaths);
+  //  await StorageServices.uploadImageSet(_imagePaths, note);
   }
 
   @override 
@@ -154,7 +159,7 @@ class _EditAndConfirmUploadScreenState extends State<EditAndConfirmUploadScreen>
                     border: InputBorder.none,
                     labelText: 'Course Prefix'
                   ),
-                  onSaved: (value) => _data['coursePrefix'] = value
+                  onSaved: (value) => _data['course_prefix'] = value
                 ),
               ),
               Flexible(
@@ -168,7 +173,7 @@ class _EditAndConfirmUploadScreenState extends State<EditAndConfirmUploadScreen>
                     border: InputBorder.none,
                     labelText: 'Course Number'
                   ),
-                  onSaved: (value) => _data['courseNumber'] = value
+                  onSaved: (value) => _data['course_number'] = value
                 ),
               )
             ],
@@ -183,7 +188,7 @@ class _EditAndConfirmUploadScreenState extends State<EditAndConfirmUploadScreen>
               border: InputBorder.none,
               labelText: 'Description'
             ),
-            onSaved: (value) => _data['desc'] = value
+            onSaved: (value) => _data['description'] = value
           ),
           TextFormField(
             validator: (value) {

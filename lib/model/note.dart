@@ -1,5 +1,5 @@
 import 'package:Oak/model/user.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Note {
   String _id;
@@ -8,7 +8,7 @@ class Note {
   String _coursePrefix;
   String _courseNumber;
   String _school;
-  List<String> _imageIds;
+  List<String> _imageIds; // This is a list of firebase download Urls
   
   Note(
     this._id,
@@ -35,16 +35,17 @@ class Note {
     this._courseNumber = obj['course_number'];
     this._coursePrefix = obj['course_prefix'];
     this._school = obj['school'];
+    this._imageIds = obj['image_ids'];
   }
 
-  Note.fromSnapshot(DataSnapshot snapshot) {
-    _id = snapshot.key;
-    _title = snapshot.value['title'];
-    _description = snapshot.value['description'];
-    _courseNumber = snapshot.value['course_number'];
-    _coursePrefix = snapshot.value['course_prefix'];
-    _school = snapshot.value['school'];
-    _imageIds =snapshot.value['images_ids'];
+  Note.fromSnapshot(Map<String, dynamic> snapshot) {
+    _id = snapshot['id'];
+    _title = snapshot['title'];
+    _description = snapshot['description'];
+    _courseNumber = snapshot['course_number'];
+    _coursePrefix = snapshot['course_prefix'];
+    _school = snapshot['school'];
+    _imageIds =snapshot['images_ids'];
   }
 
   toObject() {
