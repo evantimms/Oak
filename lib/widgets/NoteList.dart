@@ -1,35 +1,20 @@
 import 'package:flutter/material.dart';
 import 'NoteCard.dart';
-import '../data.dart';
+import '../model/note.dart';
 
 class NoteList extends StatelessWidget {
-  String type;
+  List<Note> notes;
 
-  NoteList (type) {
-    this.type = type;
-  }
-
-  List _getSavedNotes () {
-    return [];
-  }
-
-  List _getFeaturedList () {
-    return notes;
+  NoteList (notes) {
+    this.notes = notes;
   }
 
   List<NoteCard> _buildNotes(BuildContext context){
-
-    var data = (type == 'featured') ? this._getFeaturedList() : this._getSavedNotes();
-    
-    if (data == []) return <NoteCard>[];
-    var toReturn = <NoteCard>[];
-
-    data.forEach((el) {
-      toReturn.add(
-        NoteCard(el)
-      );
+    List<NoteCard> cards = [];
+    this.notes.forEach((note) {
+      cards.add(new NoteCard(note.toObject()));
     });
-    return toReturn;
+    return cards;
   }
 
   @override

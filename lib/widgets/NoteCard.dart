@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../screens/CardScreen.dart';
+import '../auth/Authenticator.dart';
 
 
 class NoteCard extends StatelessWidget {
   var data;
-
 
   NoteCard (data) {
     this.data = data;

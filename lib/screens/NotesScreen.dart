@@ -1,5 +1,19 @@
 import 'package:flutter/material.dart';
 import '../widgets/NoteList.dart';
+import '../services/DbServices.dart';
+import '../auth/Authenticator.dart';
+import '../model/note.dart';
+import '../model/user.dart';
+import 'dart:async';
+import 'dart:io';
+
+enum CurrentScreen {
+  SAVED,
+  FEATURED
+}
+
+final Authenticator auth = new Authenticator();
+
 class NotesScreen extends StatefulWidget {
 
   @override
@@ -7,6 +21,22 @@ class NotesScreen extends StatefulWidget {
 }
 
 class _NotesScreenState extends State<NotesScreen> with TickerProviderStateMixin {
+  CurrentScreen currentScreen = CurrentScreen.FEATURED;
+  User current;
+  List<Note> featuredNotes;
+  List<Note> savedNotes;
+
+  @override
+  void initState() {
+
+    super.initState();
+    
+    setState(() async {
+      current = await auth.getCurrentUser();
+      featuredNotes = await DbServices.getAllNotesInDB();
+      savedNotes = []; 
+    });
+  }
 
   @override
   Widget build(BuildContext context){
@@ -32,8 +62,8 @@ class _NotesScreenState extends State<NotesScreen> with TickerProviderStateMixin
               // height: 300.0,
               child: TabBarView(
                 children: <Widget>[
-                  NoteList('saved'),
-                  NoteList('featured')
+                  NoteList(savedNotes),
+                  NoteList(featuredNotes)
                 ],
               ),
             )

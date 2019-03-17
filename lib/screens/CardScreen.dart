@@ -1,39 +1,65 @@
 import 'package:flutter/material.dart';
+import '../model/user.dart';
+import '../auth/Authenticator.dart';
+
+final Authenticator auth = new Authenticator();
 
 class CardScreen extends StatefulWidget {
   var data;
-
+  List<String> imagePaths;
   CardScreen (data) {
     this.data = data;
+    imagePaths = data.imageIds;
   }
   
   @override
-  _CardScreenState createState() => _CardScreenState(data);
+  _CardScreenState createState() => _CardScreenState();
 }
 
 class _CardScreenState extends State<CardScreen> {
-  var data;
 
-  _CardScreenState (data) {
-    this.data = data;
+  List<Widget> _previewImageList;
+  bool  hasAccess;
+  int _currentIndex;
+  User current;
+
+  void initState() {
+    super.initState();
+    setState(() async {
+      _previewImageList = this._getImages();
+      _currentIndex = 0;
+      current = await auth.getCurrentUser();
+      hasAccess = _checkUserAccess();
+    });
+    
   }
 
-  final List<Widget> _previewImageList = <Widget>[
-    Image.asset(
-      'images/note1.jpg',
-      height: 300,
-      width: 400,
-      fit: BoxFit.cover,
-    ),
-    Image.asset(
-      'images/note2.jpg',
-      height: 300,
-      width: 400,
-      fit: BoxFit.cover,
-    ),
-  ];
+  _checkUserAccess() {
+    bool hasAccess = false;
+    current.savedNotes.forEach((n) {
+      if (n.id == widget.data.id) {
+        hasAccess =  true;
+      }
+    });
+    return hasAccess;
+  }
 
-  int _currentIndex = 0;
+  _requestAccess() {
+    // TODO: Implement
+  }
+
+  List<Widget> _getImages() {
+    return List.generate(widget.imagePaths.length, (index) {
+      return ( 
+        Image.asset(
+          widget.imagePaths[index],
+          height: 300,
+          width: 400,
+          fit: BoxFit.cover,
+        )
+      );
+    });
+  }
 
   @override 
   Widget build(BuildContext context){
@@ -54,8 +80,7 @@ class _CardScreenState extends State<CardScreen> {
         key: ValueKey(this._currentIndex),
         child: this._previewImageList[_currentIndex],
       )
-      
-     );
+    );
 
     Widget descriptionSection = Container(
       padding: EdgeInsets.symmetric(vertical: 8.0),
@@ -63,21 +88,21 @@ class _CardScreenState extends State<CardScreen> {
         children: <Widget>[
           Container(
             child: Text(
-              data['title'],
+              widget.data['title'],
               textScaleFactor: 2.0,
               textAlign: TextAlign.left,
             ),
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 4.0),
-            child: Text(data['dateCreated'].toString()),
+            child: Text(widget.data['dateCreated'].toString()),
           ),
           Padding(
               padding: EdgeInsets.only(left: 4.0),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                 data['description']
+                 widget.data['description']
                 ),
               )  
           )
@@ -91,7 +116,9 @@ class _CardScreenState extends State<CardScreen> {
       child: Align(
         alignment:  Alignment.bottomCenter,
         child:  RaisedButton(
-          onPressed: () {},
+          onPressed: () {
+            this._requestAccess();
+          },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -106,7 +133,7 @@ class _CardScreenState extends State<CardScreen> {
 
     return new Scaffold(
       appBar: AppBar(
-        title: Text('ECE 311'),
+        title: Text(widget.data.title),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.report),

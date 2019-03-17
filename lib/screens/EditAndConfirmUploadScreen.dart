@@ -41,6 +41,7 @@ class _EditAndConfirmUploadScreenState extends State<EditAndConfirmUploadScreen>
     DbServices.addNoteSetInDB(newNote, _imagePaths);
     Navigator.popUntil(context, ModalRoute.withName('/home'));
 
+  }
 
   List<Widget> _buildImageList() {
     return List<GestureDetector>.generate(_imagePaths.length, (index){
@@ -102,7 +103,7 @@ class _EditAndConfirmUploadScreenState extends State<EditAndConfirmUploadScreen>
     );
   }
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     this._imageList = _buildImageList();
 
@@ -227,7 +228,6 @@ class _EditAndConfirmUploadScreenState extends State<EditAndConfirmUploadScreen>
         ],
       ),
     );
-
 
     return Scaffold(
       appBar: AppBar(

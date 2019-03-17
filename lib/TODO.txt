@@ -14,8 +14,9 @@ Chase:
 
 
 Evan:
-- Saved notes page
-- Featured notes page
-- Note Card
-- Save Notes 
+- Save Notes
+- Tokens
 - Search
+- Update User Account ( Change email, delete account etc )
+- Email Validation
+- Sign up via google

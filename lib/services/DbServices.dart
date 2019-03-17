@@ -38,29 +38,46 @@ class DbServices {
   // User CRUD using normal user model
   static Future<void> addNewUserInDB(User user) async {
     await usersReference.document(user.uid).setData(user.toObject());
-    _transact();
+    final DocumentReference userRef = usersReference.document(user.uid);
+    await Firestore.instance.runTransaction((Transaction tx) async {
+      DocumentSnapshot postSnapshot = await tx.get(userRef);
+      if (postSnapshot.exists) {
+        await tx.set(userRef, user.toObject());
+      }
+    });
   }
 
   static Future<void> updateCurrentUserInDB(User user) async {
     await usersReference.document(user.uid).updateData(user.toObject());
-    _transact();
+    final DocumentReference userRef = usersReference.document(user.uid);
+    await Firestore.instance.runTransaction((Transaction tx) async {
+      DocumentSnapshot postSnapshot = await tx.get(userRef);
+      if (postSnapshot.exists) {
+        await tx.update(userRef, user.toObject());
+      }
+    });
   }
 
-  static Future<void> readCurrentUserInDB(User user) async {
-    String uid = user.uid;
+  static Future<void> readCurrentUserInDB(String uid) async {
     var query = await usersReference.document(uid).get();
     if (query.data != null) {
       var data = query.data;
       var formattedData = await _convertRefsToNotes(data);
-      _transact();
+      
       return User.map(formattedData);
     }
   }
 
-  static void deleteUserInDB(User user) {
+  static void deleteUserInDB(User user) async {
     String uid = user.uid;
-    usersReference.document(uid).delete();
-    _transact();
+    await usersReference.document(uid).delete();
+    final DocumentReference userRef = usersReference.document(user.uid);
+    await Firestore.instance.runTransaction((Transaction tx) async {
+      DocumentSnapshot postSnapshot = await tx.get(userRef);
+      if (postSnapshot.exists) {
+        await tx.delete(userRef);
+      }
+    });
   }
 
   // Note CRUD
@@ -80,12 +97,12 @@ class DbServices {
     current.savedNotes.add(noteRef);
     print(current.toObject());
     await updateCurrentUserInDB(current);
-    _transact();
+    
   }
 
   static Future<void> updateNoteSetInDB(Note note) async {
     await notesReference.document(note.id).updateData(note.toObject());
-    _transact();
+    
   }
 
   static Future<void> readNoteSetInDB(Note note) {
@@ -94,11 +111,30 @@ class DbServices {
 
   static Future<void> deleteNoteSetInDB(Note note) {
     notesReference.document(note.id).delete();
-    _transact();
+    
   }
 
   static _transact() {
 
+  }
+
+  static getAllNotesInDB({ int max }) async {
+    QuerySnapshot querySnapshot = await notesReference.getDocuments();
+    List<DocumentSnapshot> docs = querySnapshot.documents;
+    List<Note> toreturn = [];
+    if (max != null) {
+      for (int i = 0; i < max; i ++) {
+        DocumentSnapshot doc = docs[i];
+        toreturn.add(new Note.map(doc.data));
+      }
+    } else {
+      // get all the notes in the database
+      for (DocumentSnapshot doc in docs ) {
+        print(doc.data);
+        toreturn.add(new Note.map(doc.data));
+      }
+      return toreturn;
+    }
   }
 
   static _buildDbUser(FirebaseUser fbUser) {
