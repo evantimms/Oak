@@ -39,7 +39,9 @@ class _EditAndConfirmUploadScreenState extends State<EditAndConfirmUploadScreen>
     _formKey.currentState.save();
     Note newNote = new Note.map(_data);
     DbServices.addNoteSetInDB(newNote, _imagePaths);
-    Navigator.popUntil(context, ModalRoute.withName('/home'));
+    print(ModalRoute.withName('/home'));
+    print('routing to login...');
+    Navigator.pushNamed(context, '/home');
 
   }
 
@@ -65,7 +67,6 @@ class _EditAndConfirmUploadScreenState extends State<EditAndConfirmUploadScreen>
               FlatButton(
                 child: Text('Yes'),
                 onPressed: (){
-                  Navigator.of(context).pop();
                   _onUploadConfirm(context);
                 },
               ),

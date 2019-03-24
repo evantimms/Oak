@@ -30,11 +30,13 @@ class _NotesScreenState extends State<NotesScreen> with TickerProviderStateMixin
   void initState() {
 
     super.initState();
-    
-    setState(() async {
-      current = await auth.getCurrentUser();
-      featuredNotes = await DbServices.getAllNotesInDB();
-      savedNotes = []; 
+    auth.getCurrentUser().then((user) {
+      DbServices.getAllNotesInDB().then((notes) {
+        setState(() {
+          current = user;
+          featuredNotes = notes;
+        });
+      });
     });
   }
 

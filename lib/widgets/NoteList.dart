@@ -11,9 +11,11 @@ class NoteList extends StatelessWidget {
 
   List<NoteCard> _buildNotes(BuildContext context){
     List<NoteCard> cards = [];
-    this.notes.forEach((note) {
-      cards.add(new NoteCard(note.toObject()));
-    });
+    if (this.notes != null) {
+      this.notes.forEach((note) {
+        cards.add(new NoteCard(note.toObject()));
+      });
+    }
     return cards;
   }
 

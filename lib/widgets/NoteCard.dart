@@ -37,7 +37,7 @@ class NoteCard extends StatelessWidget {
                   children: <Widget>[
                     Text(this.data['title']),
                     SizedBox(height: 8.0),
-                    Text(this.data['coursePrefix'] + this.data['courseNumber'])
+                    Text(this.data['course_prefix'] + this.data['course_number'])
                   ],
                 ),
               ),

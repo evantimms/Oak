@@ -158,10 +158,10 @@ class DbServices {
       var note = response.data;
       createdNotes.add(new Note.map(note));
     }
-
     for (DocumentReference noteref in savedNotesRefs) {
       DocumentSnapshot response = await noteref.get();
       var note = response.data;
+      print(note);
       savedNotes.add(new Note.map(note));
     }
     data['created_notes'] =createdNotes;
