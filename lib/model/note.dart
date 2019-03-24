@@ -8,7 +8,7 @@ class Note {
   String _coursePrefix;
   String _courseNumber;
   String _school;
-  List<dynamic> _imageIds; // This is a list of firebase download Urls
+  List<String> _imageIds; // This is a list of firebase download Urls
   
   Note(
     this._id,
@@ -26,7 +26,7 @@ class Note {
   String get coursePrefix => _coursePrefix;
   String get courseNumber => _courseNumber;
   String get school => _school;
-  List<dynamic> get imageIds => _imageIds;
+  List<String> get imageIds => _imageIds;
 
   Note.map(dynamic obj) {
     this._id = obj['id'];
@@ -35,7 +35,7 @@ class Note {
     this._courseNumber = obj['course_number'];
     this._coursePrefix = obj['course_prefix'];
     this._school = obj['school'];
-    this._imageIds = obj['image_ids'];
+    this._imageIds = obj['image_ids'].cast<String>();
   }
 
   Note.fromSnapshot(Map<String, dynamic> snapshot) {

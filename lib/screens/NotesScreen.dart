@@ -28,7 +28,6 @@ class _NotesScreenState extends State<NotesScreen> with TickerProviderStateMixin
 
   @override
   void initState() {
-
     super.initState();
     auth.getCurrentUser().then((user) {
       DbServices.getAllNotesInDB().then((notes) {

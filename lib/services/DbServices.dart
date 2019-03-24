@@ -149,8 +149,8 @@ class DbServices {
   }
 
   static _convertRefsToNotes(Map<String, dynamic> data) async {
-    List<dynamic> createdNotesRefs = data['created_notes'];
-    List<dynamic> savedNotesRefs = data['saved_notes'];
+    List<DocumentReference> createdNotesRefs = data['created_notes'].cast<DocumentReference>();
+    List<DocumentReference> savedNotesRefs = data['saved_notes'].cast<DocumentReference>();
     List<Note> createdNotes = [];
     List<Note> savedNotes = [];
     for (DocumentReference noteref in createdNotesRefs) {
@@ -161,7 +161,6 @@ class DbServices {
     for (DocumentReference noteref in savedNotesRefs) {
       DocumentSnapshot response = await noteref.get();
       var note = response.data;
-      print(note);
       savedNotes.add(new Note.map(note));
     }
     data['created_notes'] =createdNotes;

@@ -37,12 +37,10 @@ class _EditAndConfirmUploadScreenState extends State<EditAndConfirmUploadScreen>
     // 2. Get Image files
     // 3. Upload to server
     _formKey.currentState.save();
+    _data['image_ids'] = _imagePaths;
     Note newNote = new Note.map(_data);
     DbServices.addNoteSetInDB(newNote, _imagePaths);
-    print(ModalRoute.withName('/home'));
-    print('routing to login...');
     Navigator.pushNamed(context, '/home');
-
   }
 
   List<Widget> _buildImageList() {

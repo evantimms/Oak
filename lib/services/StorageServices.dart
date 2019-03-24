@@ -34,15 +34,17 @@ class StorageServices {
     var noteObj = note.toObject();
     noteObj['image_ids'] = imageIds;
     Note updatedNote = new Note.map(noteObj);
+    print(updatedNote);
     await DbServices.updateNoteSetInDB(updatedNote);
   }
 
   static Future<List> retrieveImageSet(Note note) async {
-    List<File> imageList = [];
+    List<File> imagePaths = [];
     final List<String> downloadUrls = note.imageIds;
     final RegExp regex = RegExp('[^?/]*\.(jpg)');
 
     for (String url in downloadUrls) {
+      print(url);
       try {
         final String filename = regex.stringMatch(url);
         final Directory tempDir = Directory.systemTemp;
@@ -50,11 +52,12 @@ class StorageServices {
       
         final StorageFileDownloadTask task = fbStorageRef.child(filename).writeToFile(file);
         await task.future;
-        imageList.add(file);
+        imagePaths.add(file);
       } catch(e) {
         throw e;
       }
     }
-    return imageList;
+    print(imagePaths);
+    return imagePaths;
   }
 }
