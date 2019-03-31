@@ -7,10 +7,6 @@ import '../model/user.dart';
 import 'dart:async';
 import 'dart:io';
 
-enum CurrentScreen {
-  SAVED,
-  FEATURED
-}
 
 final Authenticator auth = new Authenticator();
 
@@ -21,7 +17,6 @@ class NotesScreen extends StatefulWidget {
 }
 
 class _NotesScreenState extends State<NotesScreen> with TickerProviderStateMixin {
-  CurrentScreen currentScreen = CurrentScreen.FEATURED;
   User current;
   List<Note> featuredNotes;
   List<Note> savedNotes;
@@ -34,6 +29,7 @@ class _NotesScreenState extends State<NotesScreen> with TickerProviderStateMixin
         setState(() {
           current = user;
           featuredNotes = notes;
+          savedNotes  = user.savedNotes;
         });
       });
     });

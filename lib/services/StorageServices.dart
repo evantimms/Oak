@@ -21,7 +21,7 @@ class StorageServices {
         final Directory tempDir = Directory.systemTemp;
         final String filename = '${Random().nextInt(10000)}.jpg';
         final File file = File('${tempDir.path}/${filename}');
-        file.writeAsBytes(bytes.buffer.asInt8List(), mode: FileMode.write);
+        await file.writeAsBytes(bytes.buffer.asInt8List(), mode: FileMode.write);
 
         final StorageUploadTask task = fbStorageRef.child(filename).putFile(file);
         final StorageTaskSnapshot snapshot = await task.onComplete;
@@ -34,7 +34,6 @@ class StorageServices {
     var noteObj = note.toObject();
     noteObj['image_ids'] = imageIds;
     Note updatedNote = new Note.map(noteObj);
-    print(updatedNote);
     await DbServices.updateNoteSetInDB(updatedNote);
   }
 
@@ -44,7 +43,6 @@ class StorageServices {
     final RegExp regex = RegExp('[^?/]*\.(jpg)');
 
     for (String url in downloadUrls) {
-      print(url);
       try {
         final String filename = regex.stringMatch(url);
         final Directory tempDir = Directory.systemTemp;
@@ -57,7 +55,6 @@ class StorageServices {
         throw e;
       }
     }
-    print(imagePaths);
     return imagePaths;
   }
 }

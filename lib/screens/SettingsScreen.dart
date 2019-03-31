@@ -52,7 +52,6 @@ class _SettingScreenState extends State<SettingsScreen>{
                   child: Text('Yes'),
                   onPressed: (){
                     widget.signout();
-                    print(context);
                     Navigator.pushNamed(context, '/login');
                   },
                 ),

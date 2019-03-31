@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
 import '../model/user.dart';
 import '../model/note.dart';
 import '../auth/Authenticator.dart';
 import '../services/StorageServices.dart';
+import '../services/DbServices.dart';
 
 final Authenticator auth = new Authenticator();
 
@@ -24,17 +26,19 @@ class _CardScreenState extends State<CardScreen> {
   int _currentIndex = 0;
   User _current;
   bool _loadingImages = true;
+  bool _savingImage = false;
 
   void initState() {
     super.initState();
     auth.getCurrentUser().then((user) {
       setState(()  {
         _loadingImages = true;
-        _previewImageList = this._getImages();
+        _previewImageList = [];
         _current = user;
         _hasAccess = _checkUserAccess();
       });
     });
+    this._getImages();
   }
 
   _checkUserAccess() {
@@ -48,13 +52,27 @@ class _CardScreenState extends State<CardScreen> {
   }
 
   _requestAccess() {
-    // TODO: Implement
+    // TODO: Implement transactions, for now just add to saved notes
+    print(_hasAccess);
+    setState(() {
+      _savingImage = true;
+    });
+    if (_current != null && widget.note != null) {
+      var userObj = _current.toObject();
+      userObj['saved_notes'].add(widget.note);
+      DbServices.updateCurrentUserInDB(new User.map(userObj)).then((_) {
+        setState((){
+          _savingImage = false;
+        });
+      });
+    }
   }
 
-  List<Widget> _getImages(){
-    StorageServices.retrieveImageSet(widget.note).then((imagePaths) {
-      return List.generate(imagePaths.length, (index) {
-        print(imagePaths[index]);
+  void _getImages() async {
+    List<Widget> imageWidgets = [];
+    List<File> imagePaths = await StorageServices.retrieveImageSet(widget.note);
+    if (imagePaths.length > 0) {
+      imageWidgets = List<Widget>.generate(imagePaths.length, (index) {
         return ( 
           Image.asset(
             imagePaths[index].path,
@@ -64,18 +82,11 @@ class _CardScreenState extends State<CardScreen> {
           )
         );
       });
-    })
-    .then((_) {
-      print('Done retrieving images');
-      setState(() {
-        _loadingImages = false;
-      });
-    })
-    .catchError((e) {
-      print('error retreiving images');
-      print(e);
+    }
+    setState(() {
+      _previewImageList = imageWidgets;
+      _loadingImages = false;
     });
-    return null;
   }
 
   @override 
@@ -134,13 +145,15 @@ class _CardScreenState extends State<CardScreen> {
         alignment:  Alignment.bottomCenter,
         child:  RaisedButton(
           onPressed: () {
-            this._requestAccess();
+            if (!_hasAccess) {
+              this._requestAccess();
+            }
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Icon(Icons.lock_open, color: Colors.white,),
-              Text('Unlock These Notes', style: TextStyle(color: Colors.white))
+              (!_savingImage) ? Text('Unlock These Notes', style: TextStyle(color: Colors.white)) : loadingIndicator
             ],
           ),
           color: Colors.blue,

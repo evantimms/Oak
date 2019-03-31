@@ -48,6 +48,7 @@ class DbServices {
   }
 
   static Future<void> updateCurrentUserInDB(User user) async {
+    user = _convertNotesToRefs(user); // exchange the note class for a reference that firebase understands
     await usersReference.document(user.uid).updateData(user.toObject());
     final DocumentReference userRef = usersReference.document(user.uid);
     await Firestore.instance.runTransaction((Transaction tx) async {
@@ -90,12 +91,9 @@ class DbServices {
     await notesReference.document(note.id).setData(note.toObject());
     await StorageServices.uploadImageSet(filePaths, note);
     User current = await auth.getCurrentUser();
-
-    DocumentReference noteRef = _getNoteRef(note.id);
-    current = _convertNotesToRefs(current);
-    print(current.toObject());
-    current.savedNotes.add(noteRef);
-    print(current.toObject());
+    // add the note to the current user
+    var userObj = current.toObject();
+    userObj['saved_notes'].add(note);
     await updateCurrentUserInDB(current);
     
   }
@@ -130,7 +128,6 @@ class DbServices {
     } else {
       // get all the notes in the database
       for (DocumentSnapshot doc in docs ) {
-        print(doc.data);
         toreturn.add(new Note.map(doc.data));
       }
       return toreturn;

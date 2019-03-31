@@ -100,6 +100,31 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context){
 
+    final title = Padding(
+      padding: EdgeInsets.fromLTRB(40, 20, 40, 5),
+      child: Text(
+        'Oak.',
+        textAlign: TextAlign.center, 
+        style: TextStyle(
+          fontWeight: FontWeight.bold, 
+          color: Colors.lightBlueAccent, 
+          fontSize: 48
+          )),
+    );
+
+    final subTitle =Padding(
+      padding: EdgeInsets.fromLTRB(40, 5, 40, 40),
+      child: Text(
+        'The filesharing app for students.',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.blueGrey,
+          fontSize: 16,
+          fontWeight: FontWeight.w300
+        ),
+      ),
+    );
+
     final emailInput = TextFormField(
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
@@ -173,6 +198,8 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: EdgeInsets.fromLTRB(24.0,80.0,24.0,0.0),
             child: ListView(
               children: <Widget>[
+              title,
+              subTitle,
               emailInput,
               SizedBox(height: 48.0),
               passwordInput,

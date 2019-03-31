@@ -36,6 +36,7 @@ class _MainScreenState extends State<MainScreen>  with TickerProviderStateMixin 
 
   @override
   Widget build(BuildContext context){
+    print(widget.signout);
     return Scaffold(
       appBar: AppBar(
         title: Text("Oak"),

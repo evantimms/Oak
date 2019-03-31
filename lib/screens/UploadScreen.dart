@@ -105,7 +105,6 @@ class _UploadScreenState extends State<UploadScreen> {
     if (_currentImagePath != null && _currentImagePath.length > 0) {
       _imagePaths.add(_currentImagePath);
     }
-    print(_imagePaths);
     await Navigator.push(
       context, 
       MaterialPageRoute(builder: (context) => EditAndConfirmUploadScreen(_imagePaths)),

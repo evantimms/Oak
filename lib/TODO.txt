@@ -21,3 +21,6 @@ Evan:
 - Update User Account ( Change email, delete account etc )
 - Email Validation
 - Sign up via google
+
+Bugs: 
+- Memory leak with async ops
