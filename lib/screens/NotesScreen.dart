@@ -20,6 +20,7 @@ class _NotesScreenState extends State<NotesScreen> with TickerProviderStateMixin
   User current;
   List<Note> featuredNotes;
   List<Note> savedNotes;
+  bool _loading;
 
   @override
   void initState() {
@@ -30,13 +31,21 @@ class _NotesScreenState extends State<NotesScreen> with TickerProviderStateMixin
           current = user;
           featuredNotes = notes;
           savedNotes  = user.savedNotes;
+          _loading = false;
         });
       });
+    });
+    setState((){
+      _loading = true;
     });
   }
 
   @override
   Widget build(BuildContext context){
+    final loadingIcon = Center(
+      child: CircularProgressIndicator(),
+    );
+
     return Container(
       child: DefaultTabController(
         length: 2,
@@ -59,8 +68,8 @@ class _NotesScreenState extends State<NotesScreen> with TickerProviderStateMixin
               // height: 300.0,
               child: TabBarView(
                 children: <Widget>[
-                  NoteList(savedNotes),
-                  NoteList(featuredNotes)
+                  (_loading) ? loadingIcon : NoteList(savedNotes),
+                  (_loading) ? loadingIcon : NoteList(featuredNotes)
                 ],
               ),
             )

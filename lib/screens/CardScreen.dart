@@ -139,7 +139,7 @@ class _CardScreenState extends State<CardScreen> {
         ],
       ),
     );
-
+    final noteText = (!_hasAccess) ? 'Unlock these notes' : 'You own these notes';
     Widget viewButton = Expanded(
       child: Align(
         alignment:  Alignment.bottomCenter,
@@ -153,7 +153,7 @@ class _CardScreenState extends State<CardScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Icon(Icons.lock_open, color: Colors.white,),
-              (!_savingImage) ? Text('Unlock These Notes', style: TextStyle(color: Colors.white)) : loadingIndicator
+              (!_savingImage) ? Text(noteText, style: TextStyle(color: Colors.white)) : loadingIndicator
             ],
           ),
           color: Colors.blue,
@@ -166,8 +166,12 @@ class _CardScreenState extends State<CardScreen> {
         title: Text(widget.note.title),
         actions: <Widget>[
           IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {print('deleted note');},
+          ),
+          IconButton(
             icon: Icon(Icons.report),
-            onPressed: (){},
+            onPressed: () {print('report note');},
           )
         ],
       ),

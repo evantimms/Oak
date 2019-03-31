@@ -91,7 +91,6 @@ class _RootState extends State<Root> {
 
   @override 
   Widget build(BuildContext context) {
-    print(_signout);
     switch(authStatus) {
       case AuthStatus.UNKNOWN:
         return SplashScreen();

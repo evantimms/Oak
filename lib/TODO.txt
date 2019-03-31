@@ -24,3 +24,10 @@ Evan:
 
 Bugs: 
 - Memory leak with async ops
+- Navigation is a mess
+- 404 Error with some pictures
+
+TODO:
+- Search
+- Hero transition in cards
+- Error handling

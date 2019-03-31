@@ -103,8 +103,9 @@ class DbServices {
     
   }
 
-  static Future<void> readNoteSetInDB(Note note) {
-
+  static Future<void> readNoteSetInDB(Note note) async {
+    DocumentSnapshot noteRef = await notesReference.document(note.id).get();
+    return _convertRefsToNotes(noteRef.data);
   }
 
   static Future<void> deleteNoteSetInDB(Note note) {
@@ -143,6 +144,46 @@ class DbServices {
       [],
       [] 
     );
+  }
+
+  static getNotes(int limit, Map<int, String> filters, String category) async {
+    List<Note> toreturn = [];
+    category = category.toLowerCase();
+    QuerySnapshot qs = await notesReference.limit(2500).getDocuments();
+    List<DocumentSnapshot> docs = qs.documents;
+    for (int i in filters.keys) {
+      String queryString = filters[i].toLowerCase();
+      for (DocumentSnapshot ref in docs) {
+        if (toreturn.length == limit) break; // break if limit reached
+
+        
+        var data;
+        if (category == 'school' || category == 'title') {
+          data = ref.data[category].toString().toLowerCase();
+          RegExp re = new RegExp(queryString);
+          if (re.hasMatch(data)) {
+            toreturn.add(Note.map(ref.data));
+          }
+        } else if (category == 'course') {
+          data = { 
+            'p': ref.data['course_prefix'].toString().toLowerCase(),
+            'n': ref.data['course_number'] .toString().toLowerCase() 
+          };
+          // match the course prefix or number
+          RegExp p = new RegExp(data['p']);
+          RegExp n = new RegExp(data['n']);
+          // TODO: Change this to regex for extra bonus
+          if (n.hasMatch(queryString) && p.hasMatch(queryString)) {
+            toreturn.add(Note.map(ref.data));
+          }
+        }
+      }
+    }
+    return toreturn;
+  }
+
+  static loadNotes() {
+
   }
 
   static _convertRefsToNotes(Map<String, dynamic> data) async {
