@@ -115,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final subTitle =Padding(
       padding: EdgeInsets.fromLTRB(40, 5, 40, 40),
       child: Text(
-        'The filesharing app for students.',
+        'The file sharing app for students.',
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.blueGrey,

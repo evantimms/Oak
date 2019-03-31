@@ -1,5 +1,7 @@
 # Oak
 
+![Main Picture](./images/MainPicture.PNG)
+
 ## Introduction
 Let's face it. As a student one of the hardest challenges we face is finding quality notes for our classes. If we miss a class if we have our friends send us notes, or if we are lucky they are posted online. 
 
