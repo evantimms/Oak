@@ -120,14 +120,19 @@ class _SearchScreenState extends State<SearchScreen> {
       ],
     );
 
-    return Container(
-      child: Column(
-        children: <Widget>[
-          filterOptions,
-          searchQueryWidget,
-          (_loadingRes) ? searchIcon : Expanded( child: NoteList(_notes) )
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Search'),
       ),
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            filterOptions,
+            searchQueryWidget,
+            (_loadingRes) ? searchIcon : Expanded( child: NoteList(_notes) )
+          ],
+        ),
+      )
     );
   } 
 }

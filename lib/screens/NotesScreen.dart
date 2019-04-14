@@ -45,39 +45,41 @@ class _NotesScreenState extends State<NotesScreen> with TickerProviderStateMixin
     final loadingIcon = Center(
       child: CircularProgressIndicator(),
     );
-
-    return Container(
-      child: DefaultTabController(
-        length: 2,
-        child: Column(
-          children: <Widget>[
-            TabBar(
-              labelColor: Colors.black,
-              labelPadding: EdgeInsets.symmetric(horizontal: 25.0),
-              isScrollable: true,
-              tabs: <Widget>[
-                Tab(
-                  text: "Saved Notes",
-                ),
-                Tab(
-                  text: "Featured Notes",
-                )
-              ],
-            ),
-            Expanded(
-              // height: 300.0,
-              child: TabBarView(
-                children: <Widget>[
-                  (_loading) ? loadingIcon : NoteList(savedNotes),
-                  (_loading) ? loadingIcon : NoteList(featuredNotes)
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Notes"),
+      ),
+      body: Container(
+        child: DefaultTabController(
+          length: 2,
+          child: Column(
+            children: <Widget>[
+              TabBar(
+                labelColor: Colors.black,
+                labelPadding: EdgeInsets.symmetric(horizontal: 25.0),
+                isScrollable: true,
+                tabs: <Widget>[
+                  Tab(
+                    text: "Saved Notes",
+                  ),
+                  Tab(
+                    text: "Featured Notes",
+                  )
                 ],
               ),
-            )
-          ],
+              Expanded(
+                // height: 300.0,
+                child: TabBarView(
+                  children: <Widget>[
+                    (_loading) ? loadingIcon : NoteList(savedNotes),
+                    (_loading) ? loadingIcon : NoteList(featuredNotes)
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
-    
     );
-      
   }
 }

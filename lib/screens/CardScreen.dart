@@ -53,7 +53,6 @@ class _CardScreenState extends State<CardScreen> {
 
   _requestAccess() {
     // TODO: Implement transactions, for now just add to saved notes
-    print(_hasAccess);
     setState(() {
       _savingImage = true;
     });
@@ -161,7 +160,7 @@ class _CardScreenState extends State<CardScreen> {
       ),
     );
 
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text(widget.note.title),
         actions: <Widget>[

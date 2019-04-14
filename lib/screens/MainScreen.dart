@@ -1,5 +1,6 @@
 //TODO: Figure out how to simply these imports
 import 'package:flutter/material.dart';
+import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 import '../screens/NotesScreen.dart';
 import '../screens/UploadScreen.dart';
 import '../screens/SearchScreen.dart';
@@ -18,68 +19,83 @@ class MainScreen extends StatefulWidget{
 }
 
 class _MainScreenState extends State<MainScreen>  with TickerProviderStateMixin {
+  AnimationController _animationController;
+  Animation _animation;
+  List<Widget> _children  = [];
+  int _currentIndex = 0;
 
-  final List<Widget> _children  = [
-    UploadScreen(),
-    NotesScreen(),
-    SearchScreen()
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(seconds: 2));
 
-  int _currentIndex = 1;
+    _animation = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.fastOutSlowIn,
+    ));
+
+    _children = [
+      NotesScreen(),
+      SearchScreen(),
+      SettingsScreen(signout: widget.signout)
+    ];
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
   
   // Changes current page 
   void _onTabTapped(int newIndex){
     setState(() {
-          _currentIndex = newIndex;
-        });
+      _currentIndex = newIndex;
+    });
   }
 
   @override
   Widget build(BuildContext context){
-    print(widget.signout);
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Oak"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: (){
-              Navigator.push(
-                context, 
-                MaterialPageRoute(builder: (context) => SettingsScreen(signout: widget.signout)),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.monetization_on),
-            onPressed: (){
-              Navigator.push(
-                context, 
-                MaterialPageRoute(builder: (context) => TransactionScreen()),
-              );
-            },
-          )
-        ],
-      ),
       body: _children[_currentIndex],
-      bottomNavigationBar:  BottomNavigationBar(
-       onTap: _onTabTapped, // new
-       currentIndex: _currentIndex, // new
-       items: [
-         new BottomNavigationBarItem(
-           icon: Icon(Icons.file_upload),
-           title: Text('Upload'),
-         ),
-         new BottomNavigationBarItem(
-           icon: Icon(Icons.home),
-           title: Text('My Notes'),
-         ),
-         new BottomNavigationBarItem(
-           icon: Icon(Icons.search),
-           title: Text('Search'),
-         )
-       ]
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Navigate to the camera screen
+          Navigator.push(context, MaterialPageRoute(builder: (context) => UploadScreen()));
+        },
+        child: Icon(Icons.add, color: Colors.white,),
+        backgroundColor: Colors.lightBlueAccent,
       ),
+      bottomNavigationBar:  BubbleBottomBar(
+        opacity: 0.2,
+        onTap: _onTabTapped, // new
+        currentIndex: _currentIndex, // new
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        elevation: 8,
+        fabLocation: BubbleBottomBarFabLocation.end, //new
+        hasNotch: true, //new
+        hasInk: true, //new, gives a cute ink effect
+        inkColor: Colors.black12, //optional, uses theme color if not specified
+        items: <BubbleBottomBarItem>[
+          BubbleBottomBarItem(
+            backgroundColor: Colors.deepPurple,
+            icon: Icon(Icons.home, color: Colors.black),
+            title: Text('Notes'),
+          ),
+          BubbleBottomBarItem(
+            backgroundColor: Colors.red,
+            icon: Icon(Icons.search, color: Colors.black,),
+            title: Text('Search'),
+          ),
+          BubbleBottomBarItem(
+            backgroundColor: Colors.green,
+            icon: Icon(Icons.settings, color: Colors.black,),
+            title: Text('Settings'),
+          )
+        ]
+        ),
     );
   }
 }
