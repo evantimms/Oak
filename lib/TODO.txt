@@ -1,18 +1,3 @@
-For minimum working app we need:
-
-1. Updated Models - DONE
-2. Refactor Authentication 
-3. Uploading Note & Storing images.
-4. Downloading Notes and images in Main Screen.
-
-Chase:
-- Look into Firebase ML kit for image recognition.
-- UI Enhancements:
-    - Note Cards
-    - Upload Screen
-- Search 
-
-
 Evan:
 - Bugfixes
 - Save Notes
@@ -28,6 +13,8 @@ Bugs:
 - 404 Error with some pictures
 
 TODO:
-- Search
-- Hero transition in cards
+- Bugfixes
 - Error handling
+- Rating System
+- Transactions
+- Global State Management
