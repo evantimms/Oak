@@ -4,8 +4,6 @@ import '../services/DbServices.dart';
 import '../auth/Authenticator.dart';
 import '../model/note.dart';
 import '../model/user.dart';
-import 'dart:async';
-import 'dart:io';
 
 
 final Authenticator auth = new Authenticator();
@@ -60,7 +58,7 @@ class _NotesScreenState extends State<NotesScreen> with TickerProviderStateMixin
                 isScrollable: true,
                 tabs: <Widget>[
                   Tab(
-                    text: "Saved Notes",
+                    text: "My Notes",
                   ),
                   Tab(
                     text: "Featured Notes",

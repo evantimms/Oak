@@ -40,7 +40,7 @@ class _EditAndConfirmUploadScreenState extends State<EditAndConfirmUploadScreen>
     _data['image_ids'] = _imagePaths;
     Note newNote = new Note.map(_data);
     DbServices.addNoteSetInDB(newNote, _imagePaths);
-    Navigator.pushNamed(context, '/home');
+    Navigator.pushNamed(context, '/');
   }
 
   List<Widget> _buildImageList() {

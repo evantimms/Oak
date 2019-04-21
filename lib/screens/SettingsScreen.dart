@@ -52,7 +52,7 @@ class _SettingScreenState extends State<SettingsScreen>{
                   child: Text('Yes'),
                   onPressed: (){
                     widget.signout();
-                    Navigator.pushNamed(context, '/login');
+                    Navigator.pushNamed(context, '/');
                   },
                 ),
                 FlatButton(

@@ -18,3 +18,7 @@ TODO:
 - Rating System
 - Transactions
 - Global State Management
+
+Global State Management
+- BLoC Pattern
+- Keep Auth, Account Info and Notes as global state

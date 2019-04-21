@@ -9,6 +9,7 @@ class Note {
   String _courseNumber;
   String _school;
   List<String> _imageIds; // This is a list of firebase download Urls
+  int _rating;
   
   Note(
     this._id,
@@ -17,7 +18,8 @@ class Note {
     this._courseNumber, 
     this._coursePrefix, 
     this._school,
-    this._imageIds
+    this._imageIds,
+    this._rating
   );
 
   String get id => _id;
@@ -27,6 +29,7 @@ class Note {
   String get courseNumber => _courseNumber;
   String get school => _school;
   List<String> get imageIds => _imageIds;
+  int get rating => _rating;
 
   Note.map(dynamic obj) {
     this._id = obj['id'];
@@ -36,6 +39,7 @@ class Note {
     this._coursePrefix = obj['course_prefix'];
     this._school = obj['school'];
     this._imageIds = obj['image_ids'].cast<String>();
+    this._rating = obj['rating'];
   }
 
   Note.fromSnapshot(Map<String, dynamic> snapshot) {
@@ -46,6 +50,7 @@ class Note {
     _coursePrefix = snapshot['course_prefix'];
     _school = snapshot['school'];
     _imageIds =snapshot['images_ids'];
+    _rating = snapshot['rating'];
   }
 
   toObject() {
@@ -56,7 +61,8 @@ class Note {
       'course_number':_courseNumber,
       'course_prefix':_coursePrefix,
       'school':_school,
-      'image_ids': _imageIds
+      'image_ids': _imageIds,
+      'rating': _rating
     };
   }
 

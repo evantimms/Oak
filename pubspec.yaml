@@ -28,6 +28,7 @@ dependencies:
   cloud_firestore: 0.9.5+2
   uuid: ^2.0.0
   bubble_bottom_bar: ^1.2.0
+  bloc: ^0.12.0
 
 dev_dependencies:
   flutter_test:

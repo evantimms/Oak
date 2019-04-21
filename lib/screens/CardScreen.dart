@@ -41,6 +41,11 @@ class _CardScreenState extends State<CardScreen> {
     this._getImages();
   }
 
+  void dispose() {
+    this._updateNoteProperties();
+    super.dispose();
+  }
+
   _checkUserAccess() {
     bool hasAccess = false;
     _current.savedNotes.forEach((n) {
@@ -88,6 +93,27 @@ class _CardScreenState extends State<CardScreen> {
     });
   }
 
+  void _ratePos() {
+    var noteObj = widget.note.toObject();
+    if (noteObj['rating'] != null) {
+      noteObj['rating'] += 1;
+    }
+    widget.note = new Note.map(noteObj);
+  }
+
+  void _rateNeg() {
+    var noteObj = widget.note.toObject();
+    if (noteObj['rating'] != null && noteObj['rating'] > 0) {
+      noteObj['rating'] -= 1;
+    }
+    widget.note = new Note.map(noteObj);
+  }
+
+  void _updateNoteProperties() {
+    Note note = widget.note;
+    DbServices.updateNoteSetInDB(note); // wont currently work
+  }
+
   @override 
   Widget build(BuildContext context){
 
@@ -123,10 +149,6 @@ class _CardScreenState extends State<CardScreen> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 4.0),
-            child: Text('Date Created:'),
-          ),
-          Padding(
               padding: EdgeInsets.only(left: 4.0),
               child: Align(
                 alignment: Alignment.centerLeft,
@@ -160,14 +182,43 @@ class _CardScreenState extends State<CardScreen> {
       ),
     );
 
+    Widget ratingButtons = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+          child: Row(
+            children: <Widget>[
+              Icon(Icons.thumb_up),
+              Text((widget.note.rating != null) ? widget.note.rating.toString() : '0')
+            ],
+          ),
+        ),
+        Row(
+          children: <Widget>[
+            RaisedButton(
+              onPressed: _ratePos,
+              child: Icon(Icons.thumb_up),
+            ),
+            RaisedButton(
+              onPressed: _rateNeg,
+              child: Icon(Icons.thumb_down),
+              
+            )
+          ],
+        )
+        
+      ],
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.note.title),
         actions: <Widget>[
-          IconButton(
+          (_hasAccess) ? IconButton(
             icon: Icon(Icons.delete),
-            onPressed: () {print('deleted note');},
-          ),
+            onPressed: () {print('delete note');},
+          ) : Container(),
           IconButton(
             icon: Icon(Icons.report),
             onPressed: () {print('report note');},
@@ -177,6 +228,7 @@ class _CardScreenState extends State<CardScreen> {
       body: Column(
             children: <Widget>[
               previewImage,
+              ratingButtons,
               descriptionSection,
               viewButton
             ],
