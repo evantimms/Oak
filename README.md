@@ -41,7 +41,3 @@ For this app to be successful, the user must have a easy to use and intuitive no
 
 ### PHASE III: Authentication and Validation
 Initially, email/password validation would be the most straightforward type of authentication. Later authentication via facebook and google would also be nice to have.
-
-### PHASE IV: Token System
-
-### PHASE V: Previews, Notifications and Subscriptions
